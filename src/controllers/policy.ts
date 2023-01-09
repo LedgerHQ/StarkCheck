@@ -9,13 +9,19 @@ const verifyPolicy = async (req: Request, res: Response, next: NextFunction) => 
     let policy: Policy[] = req.body.policy;
     let account: String = req.body.account;
     let transaction: String = req.body.transaction;
-    
-    const policyRes: any = await policyService.verifyPolicy(account, policy, transaction);
+    try {
+        const policyRes: any = await policyService.verifyPolicy(account, policy, transaction);
+        return res.status(200).json({
+            message: policyRes
+        });
+    } catch (error) {
+        return res.status(400).json({
+            message: error
+        });
+    }
 
     // return response
-    return res.status(200).json({
-        message: policyRes
-    });
+
 };
 
 export default { verifyPolicy };
