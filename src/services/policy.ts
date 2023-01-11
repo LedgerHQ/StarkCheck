@@ -1,5 +1,6 @@
-import { SequencerProvider } from "starknet";
+import { SequencerProvider, number } from "starknet";
 import { Policy } from '../types/policy';
+import BN from 'bn.js';
 
 const approveSelector = "0x219209e083275171774dab1df80982e9df2096516f06319c5c6d71ae0a8480c";
 const transferFromSelector = "0x41b033f4a31df8067c24d1e9b550a2ce75fd4a29e1147af9752174f0e6cb20";
@@ -29,16 +30,22 @@ const getTrace = async(transaction: any) => {
 
 const verifyPolicy = async (account: String, policy: Policy[], transaction: String) => {
     let trace: any = await getTrace(transaction);
-    const events = extractEvents(trace.function_invocation);
-    const res = events.filter( (event: any) =>
-    policy.reduce( (flag, policy) => 
-        flag || event.caller_address == account && (policy.address == event.contract_address)
-        , false)
-    )
+    const res = verifyPolicyWithTrace(account, policy, trace);
     return "res:" + res.length
 }
 
+const verifyPolicyWithTrace = (account: String, policy: Policy[], trace: any) => {
+  const events = extractEvents(trace.function_invocation);
+  return events.filter( (event: any) => 
+    policy.reduce( (flag, policy) => 
+        flag || event.caller_address == account 
+        && (policy.address == event.contract_address) 
+        && number.toBN(policy.amount || "0", 10).lte(number.toBN(event.calldata[1])) // note: should branch if no amount 
+        , false)
+    );
+}
 
-export default { verifyPolicy }
+
+export default { verifyPolicy, verifyPolicyWithTrace }
 
 
