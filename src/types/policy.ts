@@ -1,5 +1,5 @@
 export interface Policy {
-    address: String;
-    amount?: String;
-    ids?: String[];
+    address: string;
+    amount?: string;
+    ids?: string[];
 }
