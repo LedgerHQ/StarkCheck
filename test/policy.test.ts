@@ -64,5 +64,14 @@ describe('policy service', () => {
                 expect(res.length).toBe(1);
             });
         });
+        describe('check policy does not block during mint', () => {
+            test('ERC-721 policy with ids', async () => {
+                const trace = JSON.parse(readFileSync('test/traceMint.json').toString());
+                const policy = JSON.parse(readFileSync("test/policyERC721Approve.json").toString());
+                policy.account = "0x64225cd4ea2ab991a5539106336037d048e8d37c6d9b9cc49001df6a995d527";
+                const res = await policyService.verifyPolicyWithTrace(policy.account, policy.policy, trace);
+                expect(res.length).toBe(0);
+            });        
+        });
     });
   });
