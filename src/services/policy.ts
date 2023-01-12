@@ -3,8 +3,10 @@ import { Policy } from '../types/policy';
 import BN from 'bn.js';
 
 const approveSelector = "0x219209e083275171774dab1df80982e9df2096516f06319c5c6d71ae0a8480c";
+const approveAllSelector = "0x2d4c8ea4c8fb9f571d1f6f9b7692fff8e5ceaf73b1df98e7da8c1109b39ae9a";
 const transferFromSelector = "0x41b033f4a31df8067c24d1e9b550a2ce75fd4a29e1147af9752174f0e6cb20";
 const transferSelector= "0x83afd3f4caedc6eebf44246fe54e38c95e3179a5ec9ea81740eca5b482d12e";
+const safeTransferSelector= "0x19d59d013d4aa1a8b1ce4c8299086f070733b453c02d0dc46e735edc04d6444";
 
 const network = "goerli-alpha";
 const provider = new SequencerProvider({ network });
@@ -16,7 +18,13 @@ const provider = new SequencerProvider({ network });
  * @returns Arrray of Events
  */
  const extractEvents = (trace: any) => {
-  return trace.events.length && (trace.selector == approveSelector || trace.selector == transferSelector || trace.selector == transferFromSelector) ? 
+  return trace.events.length && (
+      trace.selector == approveSelector || 
+      trace.selector == approveAllSelector || 
+      trace.selector == transferSelector || 
+      trace.selector == transferFromSelector ||
+      trace.selector == safeTransferSelector
+    ) ? 
     [trace].concat(trace.internal_calls.length ? trace.internal_calls.flatMap( (it: any) => extractEvents(it)) : [])
   : trace.internal_calls.length ? trace.internal_calls.flatMap( (it: any) => extractEvents(it)) : []
 }
@@ -41,10 +49,19 @@ const verifyPolicyWithTrace = (account: String, policy: Policy[], trace: any) =>
         flag || event.caller_address == account 
         && (policy.address == event.contract_address) 
         && number.toBN(policy.amount || "0", 10).lte(number.toBN(event.calldata[1])) // note: should branch if no amount 
+        && findNFTIds(event, policy)
         , false)
     );
 }
 
+const findNFTIds = (event: any, policy: Policy): boolean => {
+  console.log(policy.ids, event);
+  if ( !policy.ids || event.selector == approveAllSelector ) return true;
+  const res = policy.ids.map( id => number.toBN(id) ).reduce( (flag, idBn) => idBn.eq(number.toBN(event.calldata[1])), false);
+  // console.log(res, policy.ids||[].map(number.toBN), number.toBN(event.calldata[1]));
+  return res;
+}
+ 
 
 export default { verifyPolicy, verifyPolicyWithTrace }
 
