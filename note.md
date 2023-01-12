@@ -4,3 +4,8 @@ eth erc20 addr: 0x72df4dc5b6c4df72e4288857317caf2ce9da166ab8719ab8306516a2fddfff
 approve selector: 0x219209e083275171774dab1df80982e9df2096516f06319c5c6d71ae0a8480c
 transferFrom selector: 0x41b033f4a31df8067c24d1e9b550a2ce75fd4a29e1147af9752174f0e6cb20
 transfer selector: 0x83afd3f4caedc6eebf44246fe54e38c95e3179a5ec9ea81740eca5b482d12e
+
+
+
+trace briq tx mainnet: https://starkscan.co/tx/0x023f187a518b4ed21c2e86f14db54f3b6cfe2136fa63e749f457282144f76e8a
+trace tx1 : https://testnet.starkscan.co/tx/0x02e6c38c8579fef5d530945d98a0f7905452a6e764658daf4e108d211ddffd06
