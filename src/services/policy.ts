@@ -1,6 +1,5 @@
 import { SequencerProvider, number } from "starknet";
 import { Policy } from '../types/policy';
-import BN from 'bn.js';
 
 const approveSelector = "0x219209e083275171774dab1df80982e9df2096516f06319c5c6d71ae0a8480c";
 const approveAllSelector = "0x2d4c8ea4c8fb9f571d1f6f9b7692fff8e5ceaf73b1df98e7da8c1109b39ae9a";
@@ -57,7 +56,7 @@ const verifyPolicyWithTrace = (account: String, policy: Policy[], trace: any) =>
 const findNFTIds = (event: any, policy: Policy): boolean => {
   console.log(policy.ids, event);
   if ( !policy.ids || event.selector == approveAllSelector ) return true;
-  const res = policy.ids.map( id => number.toBN(id) ).reduce( (flag, idBn) => idBn.eq(number.toBN(event.calldata[1])), false);
+  const res = policy.ids.map( id => number.toBN(id) ).reduce( (flag, idBn) => flag || idBn.eq(number.toBN(event.calldata[1])), false);
   // console.log(res, policy.ids||[].map(number.toBN), number.toBN(event.calldata[1]));
   return res;
 }

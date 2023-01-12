@@ -9,3 +9,6 @@ transfer selector: 0x83afd3f4caedc6eebf44246fe54e38c95e3179a5ec9ea81740eca5b482d
 
 trace briq tx mainnet: https://starkscan.co/tx/0x023f187a518b4ed21c2e86f14db54f3b6cfe2136fa63e749f457282144f76e8a
 trace tx1 : https://testnet.starkscan.co/tx/0x02e6c38c8579fef5d530945d98a0f7905452a6e764658daf4e108d211ddffd06
+
+trace nft approve: https://starkscan.co/tx/0x00ea84e13cf36c214e854f9ab92d2486237128c8bf2642c495e997a82d86a920
+trace nft mint whitelist:  https://starkscan.co/tx/0x066c1f0be270f258608dd7c6e93023cd9adebccc80c36705f17ddc819c201df8
