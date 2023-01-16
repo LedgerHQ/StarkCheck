@@ -103,7 +103,10 @@ const findNFTIds = (event: any, policy: Policy): boolean => {
   return res;
 }
  
+const verifySignatureRequest = (account: string, signatureRequest: object): boolean =>  {
+  return true;
+}
 
-export default { verifyPolicy, verifyPolicyWithTrace }
+export default { verifyPolicy, verifyPolicyWithTrace, verifySignatureRequest }
 
 

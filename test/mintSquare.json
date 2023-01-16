@@ -1,0 +1,98 @@
+{
+    "domain": {
+      "chainId": "SN_GOERLI",
+      "name": "Mint Square",
+      "version": "2"
+    },
+    "message": {
+      "amount": "1",
+      "collection": "0x0266b1276d23ffb53d99da3f01be7e29fa024dd33cd7f7b1eb7a46c67891c9d0",
+      "currency": "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+      "endTime": "1705407485",
+      "isOrderAsk": "1",
+      "minPercentageToAsk": "8500",
+      "nonce": 0,
+      "params": "",
+      "price": "1000000000000000000",
+      "signer": "0x06f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+      "startTime": "0",
+      "strategy": "0x000f9a59ce0dcaed50f7fd7f15aa38793cfc1e1232ca7d341919b486c54b5f43",
+      "tokenId.high": "4722018835003276051554977274982196765",
+      "tokenId.low": "255476481883810910056136758047130255360"
+    },
+    "primaryType": "Message",
+    "types": {
+      "Message": [
+        {
+          "name": "isOrderAsk",
+          "type": "felt"
+        },
+        {
+          "name": "signer",
+          "type": "felt"
+        },
+        {
+          "name": "collection",
+          "type": "felt"
+        },
+        {
+          "name": "price",
+          "type": "felt"
+        },
+        {
+          "name": "tokenId.low",
+          "type": "felt"
+        },
+        {
+          "name": "tokenId.high",
+          "type": "felt"
+        },
+        {
+          "name": "amount",
+          "type": "felt"
+        },
+        {
+          "name": "strategy",
+          "type": "felt"
+        },
+        {
+          "name": "currency",
+          "type": "felt"
+        },
+        {
+          "name": "nonce",
+          "type": "felt"
+        },
+        {
+          "name": "startTime",
+          "type": "felt"
+        },
+        {
+          "name": "endTime",
+          "type": "felt"
+        },
+        {
+          "name": "minPercentageToAsk",
+          "type": "felt"
+        },
+        {
+          "name": "params",
+          "type": "felt"
+        }
+      ],
+      "StarkNetDomain": [
+        {
+          "name": "name",
+          "type": "felt"
+        },
+        {
+          "name": "chainId",
+          "type": "felt"
+        },
+        {
+          "name": "version",
+          "type": "felt"
+        }
+      ]
+    }
+  }

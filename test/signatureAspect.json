@@ -1,0 +1,161 @@
+{
+    "domain": {
+      "chainId": "SN_GOERLI",
+      "name": "NFT Exchange",
+      "version": "0.0.1"
+    },
+    "message": {
+      "expectedItems": [
+        {
+          "amount": {
+            "high": "0x0",
+            "low": "0xd7621dc58210000"
+          },
+          "contract_address": "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+          "identifier": {
+            "high": "0x0",
+            "low": "0x0"
+          },
+          "recipient": "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+          "type": 0
+        },
+        {
+          "amount": {
+            "high": "0x0",
+            "low": "0x6a94d74f430000"
+          },
+          "contract_address": "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+          "identifier": {
+            "high": "0x0",
+            "low": "0x0"
+          },
+          "recipient": "0x04c83d3fa770187d7b0a23b3aa7132c7c8273fb4ec3db416f86e4a385596769a",
+          "type": 0
+        }
+      ],
+      "offeredItems": [
+        {
+          "amount": {
+            "high": "0x0",
+            "low": "0x1"
+          },
+          "contract_address": "0x0266b1276d23ffb53d99da3f01be7e29fa024dd33cd7f7b1eb7a46c67891c9d0",
+          "identifier": {
+            "high": "0x38d6d80d7a8f1aa342012609e26661d",
+            "low": "0xc032fb0c2f472facf800000000000000"
+          },
+          "type": 1
+        }
+      ],
+      "orderMetadata": {
+        "end_time": "1689458400",
+        "exchange_address": "0x006fcf30a53fdc33c85ab428d6c481c5d241f1de403009c4e5b66aeaf3edc890",
+        "offerer": "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+        "salt": "107175862600448",
+        "start_time": "0"
+      }
+    },
+    "primaryType": "Order",
+    "types": {
+      "Order": [
+        {
+          "name": "orderMetadata",
+          "type": "OrderMetadata"
+        },
+        {
+          "name": "offeredItems",
+          "type": "OrderItem*"
+        },
+        {
+          "name": "expectedItems",
+          "type": "OrderItemWithRecipient*"
+        }
+      ],
+      "OrderItem": [
+        {
+          "name": "type",
+          "type": "felt"
+        },
+        {
+          "name": "contract_address",
+          "type": "felt"
+        },
+        {
+          "name": "identifier",
+          "type": "Uint256"
+        },
+        {
+          "name": "amount",
+          "type": "Uint256"
+        }
+      ],
+      "OrderItemWithRecipient": [
+        {
+          "name": "type",
+          "type": "felt"
+        },
+        {
+          "name": "contract_address",
+          "type": "felt"
+        },
+        {
+          "name": "identifier",
+          "type": "Uint256"
+        },
+        {
+          "name": "amount",
+          "type": "Uint256"
+        },
+        {
+          "name": "recipient",
+          "type": "felt"
+        }
+      ],
+      "OrderMetadata": [
+        {
+          "name": "exchange_address",
+          "type": "felt"
+        },
+        {
+          "name": "offerer",
+          "type": "felt"
+        },
+        {
+          "name": "start_time",
+          "type": "felt"
+        },
+        {
+          "name": "end_time",
+          "type": "felt"
+        },
+        {
+          "name": "salt",
+          "type": "felt"
+        }
+      ],
+      "StarkNetDomain": [
+        {
+          "name": "name",
+          "type": "felt"
+        },
+        {
+          "name": "version",
+          "type": "felt"
+        },
+        {
+          "name": "chainId",
+          "type": "felt"
+        }
+      ],
+      "Uint256": [
+        {
+          "name": "low",
+          "type": "felt"
+        },
+        {
+          "name": "high",
+          "type": "felt"
+        }
+      ]
+    }
+  }
