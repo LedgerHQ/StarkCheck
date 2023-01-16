@@ -1,4 +1,4 @@
-import { SequencerProvider, number } from "starknet";
+import { SequencerProvider, number, InvocationsDetailsWithNonce, Invocation } from "starknet";
 import { Policy } from '../types/policy';
 
 const approveSelector = "0x219209e083275171774dab1df80982e9df2096516f06319c5c6d71ae0a8480c";
@@ -28,17 +28,21 @@ const provider = new SequencerProvider({ network });
   : trace.internal_calls.length ? trace.internal_calls.flatMap( (it: any) => extractEvents(it)) : []
 }
 
-const getTrace = async(transaction: any) => {
+const getTrace = async(transaction: InvocationsDetailsWithNonce) => {
   // starknet.js is not very smart
-  let trace: any = await provider.simulateTransaction(transaction, transaction);
+  let trace: any = await provider.simulateTransaction((<Invocation><unknown>transaction), transaction);
   return trace.trace
 }
 
 
-const verifyPolicy = async (account: string, policy: Policy[], transaction: string) => {
+const verifyPolicy = async (account: string, policy: Policy[], transaction: InvocationsDetailsWithNonce) => {
+  try {
     let trace: any = await getTrace(transaction);
     const res = verifyPolicyWithTrace(account, policy, trace);
     return "res:" + res.length
+  } catch (error) {
+    throw error
+  }
 }
 
 const verifyPolicyWithTrace = (account: string, policy: Policy[], trace: any) => {

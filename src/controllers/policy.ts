@@ -1,4 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
+import { InvocationsDetailsWithNonce } from "starknet";
+
 import policyService from '../services/policy';
 
 import { Policy } from '../types/policy';
@@ -8,7 +10,7 @@ const verifyPolicy = async (req: Request, res: Response, next: NextFunction) => 
     // get the data from req.body
     let policy: Policy[] = req.body.policy;
     let account: string = req.body.account;
-    let transaction: string = req.body.transaction;
+    let transaction: InvocationsDetailsWithNonce = req.body.transaction;
     try {
         const policyRes: any = await policyService.verifyPolicy(account, policy, transaction);
         return res.status(200).json({
