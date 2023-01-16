@@ -35,13 +35,13 @@ const getTrace = async(transaction: any) => {
 }
 
 
-const verifyPolicy = async (account: String, policy: Policy[], transaction: String) => {
+const verifyPolicy = async (account: string, policy: Policy[], transaction: string) => {
     let trace: any = await getTrace(transaction);
     const res = verifyPolicyWithTrace(account, policy, trace);
     return "res:" + res.length
 }
 
-const verifyPolicyWithTrace = (account: String, policy: Policy[], trace: any) => {
+const verifyPolicyWithTrace = (account: string, policy: Policy[], trace: any) => {
   const events = extractEvents(trace.function_invocation);
   return events.filter( (event: any) => 
     policy.reduce( (flag, policy) => 
