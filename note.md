@@ -12,3 +12,9 @@ trace tx1 : https://testnet.starkscan.co/tx/0x02e6c38c8579fef5d530945d98a0f79054
 
 trace nft approve: https://starkscan.co/tx/0x00ea84e13cf36c214e854f9ab92d2486237128c8bf2642c495e997a82d86a920
 trace nft mint whitelist:  https://starkscan.co/tx/0x066c1f0be270f258608dd7c6e93023cd9adebccc80c36705f17ddc819c201df8
+
+declare enum StarknetChainId {
+    MAINNET = "0x534e5f4d41494e",
+    TESTNET = "0x534e5f474f45524c49",
+    TESTNET2 = "0x534e5f474f45524c4932"
+}
