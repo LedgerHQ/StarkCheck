@@ -7,13 +7,27 @@ describe('policy service', () => {
             const trace = JSON.parse(readFileSync('test/txTrace1.json').toString());
             const policy = JSON.parse(readFileSync("test/policyERC20.json").toString());
             const res = await policyService.verifyPolicyWithTrace(policy.account, policy.policy, trace);
-            console.log(res);
+            expect(res.length).toBe(0);
+        });
+        test('ERC20 policy pass - 0x0 format', async () => {
+            const trace = JSON.parse(readFileSync('test/txTrace1.json').toString());
+            const policy = JSON.parse(readFileSync("test/policyERC20.json").toString());
+            policy.policy[0].address = "0x072df4dc5b6c4df72e4288857317caf2ce9da166ab8719ab8306516a2fddfff7";
+            const res = await policyService.verifyPolicyWithTrace(policy.account, policy.policy, trace);
             expect(res.length).toBe(0);
         });
         test('ERC20 policy amount greater than transfered', async () => {
             const trace = JSON.parse(readFileSync('test/txTrace1.json').toString());
             const policy = JSON.parse(readFileSync("test/policyERC20.json").toString());
             policy.policy[0].amount = "2";
+            const res = await policyService.verifyPolicyWithTrace(policy.account, policy.policy, trace);
+            expect(res.length).toBe(1);
+        });
+        test('ERC20 policy amount greater than transfered - 0x0 format', async () => {
+            const trace = JSON.parse(readFileSync('test/txTrace1.json').toString());
+            const policy = JSON.parse(readFileSync("test/policyERC20.json").toString());
+            policy.policy[0].amount = "2";
+            policy.policy[0].address = "0x072df4dc5b6c4df72e4288857317caf2ce9da166ab8719ab8306516a2fddfff7";
             const res = await policyService.verifyPolicyWithTrace(policy.account, policy.policy, trace);
             expect(res.length).toBe(1);
         });

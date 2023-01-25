@@ -83,10 +83,21 @@ const verifyPolicy = async (account: string, transaction: Invocation & Invocatio
   }
 }
 
-const verifyPolicyWithTrace = (account: string, policy: Policy[], trace: any) => {
+/**
+ * If an address is in the 0x0 format change it to 0x
+ * @param policy 
+ * @returns 
+ */
+const sanitize0x = (policy: Policy): Policy => {
+  policy.address = policy.address.replace("0x0", "0x");
+  return policy;
+} 
+
+const verifyPolicyWithTrace = (account: string, policies: Policy[], trace: any) => {
+  const policySanitized: Policy[] = policies.map(sanitize0x);
   const events = extractEvents(trace.function_invocation);
   return events.filter( (event: any) => 
-    policy.reduce( (flag, policy) => 
+    policySanitized.reduce( (flag, policy) => 
         flag || event.caller_address == account 
         && (policy.address == event.contract_address) 
         && number.toBN(policy.amount || "0", 10).lte(number.toBN(event.calldata[1])) // note: should branch if no amount 
