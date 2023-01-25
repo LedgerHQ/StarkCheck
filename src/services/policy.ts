@@ -96,17 +96,50 @@ const verifyPolicyWithTrace = (account: string, policy: Policy[], trace: any) =>
 }
 
 const findNFTIds = (event: any, policy: Policy): boolean => {
-  console.log(policy.ids, event);
   if ( !policy.ids || event.selector == approveAllSelector ) return true;
   const res = policy.ids.map( id => number.toBN(id) ).reduce( (flag, idBn) => flag || idBn.eq(number.toBN(event.calldata[1])), false);
-  // console.log(res, policy.ids||[].map(number.toBN), number.toBN(event.calldata[1]));
   return res;
 }
+
+function policyToAddresses(policyFromEvents: Policy[]): string[] {
+  return policyFromEvents.map( policy => policy.address );
+}
  
-const verifySignatureRequest = (account: string, signatureRequest: object): boolean =>  {
-  return true;
+/**
+ * Use account address to get policy from event and parse policy to a string[]
+ * called by the controller
+ * @param account 
+ * @param signatureRequest 
+ * @returns 
+ */
+const verifySignatureRequest = async (account: string, signatureRequest: any): Promise<string[]> =>  {
+  const policyFromEvents = await getPolicyFromEvents(account);
+  const protectedAddresses = policyToAddresses(policyFromEvents);
+  return verifySignatureRequestWithPolicy(protectedAddresses, signatureRequest);
 }
 
-export default { verifyPolicy, verifyPolicyWithTrace, verifySignatureRequest }
+/**
+ * Internal function with the logic to check a message
+ * Extracted from async calls for easier testing
+ * @param policyAddresses 
+ * @param signatureRequest 
+ */
+function verifySignatureRequestWithPolicy(policyAddresses: string[], signatureRequest: any): string[] {
+  const getValues: any = (data: any, values= []) => {
+    if(typeof data !== 'object'){
+      return [...values, data]
+    }
+    return Object.values(data).flatMap(v => getValues(v, values))
+  }
+  const fieldValues: string[] = getValues(signatureRequest.message);
+  const spottedAddresses = fieldValues.reduce( (acc: string[], value: string) => policyAddresses.includes(value) ? [ ...acc, value]: acc, []);
+  console.log("fieldValues")
+  console.log(fieldValues)
+  return spottedAddresses;
+}
+
+export default { verifyPolicy, verifyPolicyWithTrace, verifySignatureRequest, verifySignatureRequestWithPolicy, policyToAddresses }
+
+
 
 

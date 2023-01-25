@@ -24,9 +24,9 @@ const verifyPolicy = async (req: Request, res: Response, next: NextFunction) => 
 const verifySignatureRequest = async (req: Request, res: Response, next: NextFunction) => {
     // get the data from req.body
     let account: string = req.body.account;
-    let message: object = req.body.message;
+    let signatureRequest: object = req.body.signatureRequest;
     try {
-        const policyRes: any = await policyService.verifySignatureRequest(account, message);
+        const policyRes: any = await policyService.verifySignatureRequest(account, signatureRequest);
         return res.status(200).json({
             message: policyRes
         });
