@@ -33,13 +33,30 @@ const rpcPovider = new RpcProvider({ nodeUrl: process.env.NODE_RPC_URL || "" });
   : trace.internal_calls.length ? trace.internal_calls.flatMap( (it: any) => extractEvents(it)) : []
 }
 
+/**
+ * If calldata is sent in hex, convert it to felt.
+ * @param calldata array as hex or felt
+ * @returns calldata array as felt
+ */
+const sanitizeCallData = (calldata: Array<string>): Array<string> => {
+  return calldata.map( data => number.toFelt(data) )
+}
+
 const getTrace = async(transaction: Invocation & InvocationsDetailsWithNonce) => {
   // starknet.js is not very smart
+  transaction.calldata = sanitizeCallData(transaction.calldata || []);
   let trace: any = await provider.getSimulateTransaction(transaction, transaction);
   return trace.trace
 }
 
-const getPolicyFromEvents = async(account: string): Promise<Policy[]> => {
+/**
+ * Get all events from the account using the set_policy_key and returns the most recent one linked to a policy
+ * TODO might reconstruct a policy from all past events
+ * @param account: string Contract account address of the user
+ * @param signer: string Signer used for the transaction. 
+ * @returns the last policy set for this signer on this account
+ */
+const getPolicyFromEvents = async(account: string, signer: string): Promise<Policy[]> => {
   const eventFilter: RPC.EventFilter = {
     address: account,
     keys: [SET_POLICY_EVENT_SELECTOR],
@@ -47,13 +64,21 @@ const getPolicyFromEvents = async(account: string): Promise<Policy[]> => {
   }
   const events = await rpcPovider.getEvents(eventFilter);
   // PoC works with only one events for policy. Might take only last one for tests/replacements
-  // excludes first 2 params not related to the policy
   let data;
   try {
-     data = events.events[0].data?.slice(2);
-  } catch (error) {
-      throw "Contract does not have a policy set onchain"
-  }
+    // note: can't use for in because of conflincting types on starknet.js
+    const eventsLength = events.events.length
+    for( let i = eventsLength -1; i >= 0; i--) {
+      if (events.events[i].data[0] == signer) {
+          // excludes first 2 params not related to the policy which are the signer pub key and the len of the policy
+          data = events.events[i].data?.slice(2);
+          break;
+        } 
+     }
+     if (!data) throw "Contract does not have a policy set onchain for this signer";
+    } catch (error) {
+      throw "Contract does not have a policy set onchain";
+    }
   // transform the chuncks into one string and converts felt into hex and replace all ',' by nothing to convert into base64 later 
   const policyString = data.map( d => shortString.decodeShortString(d)).join().split(',').join('');
   // convert string to base64 and parse it to JSON. TODO try catch
@@ -64,13 +89,13 @@ const getPolicyFromEvents = async(account: string): Promise<Policy[]> => {
   }
 } 
 
-const verifyPolicy = async (account: string, transaction: Invocation & InvocationsDetailsWithNonce): Promise<Signature> => {
+const verifyPolicy = async (signer: string, transaction: Invocation & InvocationsDetailsWithNonce): Promise<Signature> => {
   try {
+    const policyFromEvents = await getPolicyFromEvents(transaction.contractAddress, signer);
     let trace: any = await getTrace(transaction);
-    const policyFromEvents = await getPolicyFromEvents(account);
-    console.log(trace)
+    // console.log(trace)
     // for PoC if res > 0 it means a policy is not respected
-    const res = verifyPolicyWithTrace(account, policyFromEvents, trace);
+    const res = verifyPolicyWithTrace(transaction.contractAddress, policyFromEvents, trace);
     console.log(res);
     if ( res.length == 0 ) {
       const signedTransaction = signTransactionHash(transaction);

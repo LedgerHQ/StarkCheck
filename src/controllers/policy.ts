@@ -6,10 +6,10 @@ import policyService from '../services/policy';
 // adding a post
 const verifyPolicy = async (req: Request, res: Response, next: NextFunction) => {
     // get the data from req.body
-    let account: string = req.body.account;
+    let signer: string = req.body.signer;
     let transaction: Invocation & InvocationsDetailsWithNonce = req.body.transaction;
     try {
-        const signature = await policyService.verifyPolicy(account, transaction);
+        const signature = await policyService.verifyPolicy(signer, transaction);
         return res.status(200).json({
             signature
         });
