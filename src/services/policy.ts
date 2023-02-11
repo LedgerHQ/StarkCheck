@@ -80,7 +80,6 @@ const getPolicyFromEvents = async(account: string, signer: string): Promise<Poli
     const events = await fetchEvents(account);
     // note: can't use for in because of conflincting types on starknet.js
     const eventsLength = events.events.length;
-    console.log(eventsLength)
     if (!eventsLength) throw "Contract does not have any policies set onchain";
 
     for( let i = eventsLength -1; i >= 0; i--) {
@@ -108,10 +107,8 @@ const verifyPolicy = async (signer: string, transaction: Invocation & Invocation
   try {
     const policyFromEvents = await getPolicyFromEvents(transaction.contractAddress, signer);
     let trace: any = await getTrace(transaction);
-    // console.log(trace)
     // for PoC if res > 0 it means a policy is not respected
     const res = verifyPolicyWithTrace(transaction.contractAddress, policyFromEvents, trace);
-    console.log(res);
     if ( res.length == 0 ) {
       const signedTransaction = signTransactionHash(transaction);
       return signedTransaction;
@@ -135,26 +132,31 @@ const sanitize0x = (policy: Policy): Policy => {
 
 const verifyPolicyWithTrace = (account: string, policies: Policy[], trace: any) => {
   const policySanitized: Policy[] = policies.map(sanitize0x);
+  const accountSatinized: string = account.replace("0x0", "0x");
   const events = extractEvents(trace.function_invocation);
   return events.filter( (event: any) => 
-    policySanitized.reduce( (flag, policy) => 
-        flag || event.caller_address == account 
-        && (policy.address == event.contract_address) 
-        && number.toBN(policy.amount || "0", 10).lte(number.toBN(event.calldata[1])) // note: should branch if no amount 
-        && findNFTIds(event, policy)
-        , false)
+    policySanitized.reduce( (flag, policy) => flag || (event.caller_address == accountSatinized) 
+      && (policy.address == event.contract_address) 
+      && number.toBN(policy.amount || "0", 10).lte(number.toBN(event.calldata[1])) // note: should branch if no amount 
+      && findNFTIds(event, policy)
+      , false)
     );
 }
 
 const findNFTIds = (event: any, policy: Policy): boolean => {
-  console.log(policy.ids, event);
   if ( !policy.ids || event.selector == approveAllSelector ) return true;
-  const res = policy.ids.map( id => number.toBN(id) ).reduce( (flag, idBn) => flag || idBn.eq(number.toBN(event.calldata[1])), false);
-  // console.log(res, policy.ids||[].map(number.toBN), number.toBN(event.calldata[1]));
-  return res;
+  return policy.ids.map( id => number.toBN(id) ).reduce( (flag, idBn) => flag || idBn.eq(number.toBN(event.calldata[1])), false);
 }
  
+const encodePolicy = (signer: string,policy: Policy): {base64: string, feltEncoded: Array<string>}  => {
+  return {
+    base64: '',
+    feltEncoded: ['']
+  }
+}
 
-export default { verifyPolicy, verifyPolicyWithTrace }
+
+
+export default { verifyPolicy, verifyPolicyWithTrace, encodePolicy }
 
 

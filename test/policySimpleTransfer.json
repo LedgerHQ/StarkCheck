@@ -1,0 +1,10 @@
+{
+    "signer": "0x6bccce5bf55d75bfa115cb83b881e345de57343957680761adb1367d70ace83",
+    "account": "0x05537071ea21b91a3b3743866ea12cf197f0b37a6b83be41dd0bbfec6a2cf8ee",
+    "policy": [
+        {
+            "address": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+            "amount": "10000000000"
+        }
+    ]
+}
