@@ -50,24 +50,39 @@ const getTrace = async(transaction: Invocation & InvocationsDetailsWithNonce) =>
 }
 
 /**
- * Get all events from the account using the set_policy_key and returns the most recent one linked to a policy
+ * Get all events from the account using the set_policy_key
+ * @param account 
+ * @returns events
+ */
+const fetchEvents = async(account: string) => {
+  try {
+    const eventFilter: RPC.EventFilter = {
+      address: account,
+      keys: [SET_POLICY_EVENT_SELECTOR],
+      chunk_size: 20
+    }
+    return await rpcPovider.getEvents(eventFilter);
+  } catch (error) {
+    throw "can't connect to RPC provider"
+  }
+}
+
+/**
+ * returns the most recent event linked to a signer from the policy events
  * TODO might reconstruct a policy from all past events
  * @param account: string Contract account address of the user
  * @param signer: string Signer used for the transaction. 
  * @returns the last policy set for this signer on this account
  */
 const getPolicyFromEvents = async(account: string, signer: string): Promise<Policy[]> => {
-  const eventFilter: RPC.EventFilter = {
-    address: account,
-    keys: [SET_POLICY_EVENT_SELECTOR],
-    chunk_size: 20
-  }
-  const events = await rpcPovider.getEvents(eventFilter);
-  // PoC works with only one events for policy. Might take only last one for tests/replacements
   let data;
   try {
+    const events = await fetchEvents(account);
     // note: can't use for in because of conflincting types on starknet.js
-    const eventsLength = events.events.length
+    const eventsLength = events.events.length;
+    console.log(eventsLength)
+    if (!eventsLength) throw "Contract does not have any policies set onchain";
+
     for( let i = eventsLength -1; i >= 0; i--) {
       if (events.events[i].data[0] == signer) {
           // excludes first 2 params not related to the policy which are the signer pub key and the len of the policy
@@ -77,7 +92,7 @@ const getPolicyFromEvents = async(account: string, signer: string): Promise<Poli
      }
      if (!data) throw "Contract does not have a policy set onchain for this signer";
     } catch (error) {
-      throw "Contract does not have a policy set onchain";
+      throw error;
     }
   // transform the chuncks into one string and converts felt into hex and replace all ',' by nothing to convert into base64 later 
   const policyString = data.map( d => shortString.decodeShortString(d)).join().split(',').join('');
