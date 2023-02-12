@@ -1,4 +1,4 @@
-import { SequencerProvider, RpcProvider, RPC, number, InvocationsDetailsWithNonce, Invocation, shortString, Signature } from "starknet";
+import { SequencerProvider, RpcProvider, RPC, number, InvocationsDetailsWithNonce, Invocation, shortString, Signature, TransactionSimulationResponse, TransactionTraceResponse } from "starknet";
 import { Policy } from '../types/policy';
 const approveSelector = "0x219209e083275171774dab1df80982e9df2096516f06319c5c6d71ae0a8480c";
 const approveAllSelector = "0x2d4c8ea4c8fb9f571d1f6f9b7692fff8e5ceaf73b1df98e7da8c1109b39ae9a";
@@ -42,19 +42,24 @@ const sanitizeCallData = (calldata: Array<string>): Array<string> => {
   return calldata.map( data => number.toFelt(data) )
 }
 
-const getTrace = async(transaction: Invocation & InvocationsDetailsWithNonce) => {
+/**
+ * Fetch the transaction trace by simulating its execution on the prodider RPC node
+ * @param transaction signed transaction sent by the user
+ * @returns trace: TransactionTraceResponse  The trace of transaction
+ */
+const getTrace = async(transaction: Invocation & InvocationsDetailsWithNonce): Promise<TransactionTraceResponse> => {
   // starknet.js is not very smart
   transaction.calldata = sanitizeCallData(transaction.calldata || []);
-  let trace: any = await provider.getSimulateTransaction(transaction, transaction);
+  let trace: TransactionSimulationResponse = await provider.getSimulateTransaction(transaction, transaction);
   return trace.trace
 }
 
 /**
- * Get all events from the account using the set_policy_key
+ * Get all events from the account using the set_policy_event_selector
  * @param account 
- * @returns events
+ * @returns events: RPC.GetEventsResponse all the events matching set_policy_event_selector
  */
-const fetchEvents = async(account: string) => {
+const fetchEvents = async(account: string): Promise<RPC.GetEventsResponse> => {
   try {
     const eventFilter: RPC.EventFilter = {
       address: account,
@@ -103,6 +108,13 @@ const getPolicyFromEvents = async(account: string, signer: string): Promise<Poli
   }
 } 
 
+/**
+ * 
+ * @param signer Signer used by the user for this transaction. Used to fetch correct policy
+ * @param transaction Signed transaction the user wants to perform
+ * @returns 200: A signature of the tx by the starkCheck key. 
+ * @returns 400: The list of events that does not respect the policy. 
+ */
 const verifyPolicy = async (signer: string, transaction: Invocation & InvocationsDetailsWithNonce): Promise<Signature> => {
   try {
     const policyFromEvents = await getPolicyFromEvents(transaction.contractAddress, signer);
@@ -130,6 +142,14 @@ const sanitize0x = (policy: Policy): Policy => {
   return policy;
 } 
 
+/**
+ * Checks all events emitted by the transaction against the user policies
+ * Note: all events checked here are already filtered using the selectors we watch 
+ * @param account Contract account address of the user initiating a transaction
+ * @param policies policies of the account that previously matched the signer used for the tx
+ * @param trace Trace of the transaction that will be executed
+ * @returns The list of events that does not respect a policy
+ */
 const verifyPolicyWithTrace = (account: string, policies: Policy[], trace: any) => {
   const policySanitized: Policy[] = policies.map(sanitize0x);
   const accountSatinized: string = account.replace("0x0", "0x");
@@ -148,6 +168,12 @@ const findNFTIds = (event: any, policy: Policy): boolean => {
   return policy.ids.map( id => number.toBN(id) ).reduce( (flag, idBn) => flag || idBn.eq(number.toBN(event.calldata[1])), false);
 }
  
+/**
+ * This takes a policy and returns a base64 and a Array<feltEncodedString> of a policy
+ * This currently does not check if a policy is valid 
+ * @param policy array<Policy>
+ * @returns base64 encoded policy and a Array<feltEncodedString> of a policy
+ */
 const encodePolicy = (policy: Policy): {base64: string, feltEncoded: Array<string>}  => {
   const base64 = Buffer.from(JSON.stringify(policy)).toString('base64');
   const policyArray = base64.match(/.{1,31}/g) || [];
