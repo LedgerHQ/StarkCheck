@@ -16,6 +16,46 @@ const provider = new SequencerProvider({ network });
 const rpcPovider = new RpcProvider({ nodeUrl: process.env.NODE_RPC_URL || "" });
 
 /**
+ * 
+ * @param signer Signer used by the user for this transaction. Used to fetch correct policy
+ * @param transaction Signed transaction the user wants to perform
+ * @returns 200: A signature of the tx by the starkCheck key. 
+ * @returns 400: The list of events that does not respect the policy. 
+ */
+const verifyPolicy = async (signer: string, transaction: Invocation & InvocationsDetailsWithNonce): Promise<Signature> => {
+  try {
+    const policyFromEvents = await getPolicyFromEvents(transaction.contractAddress, signer);
+    let trace: TransactionTraceResponse = await getTrace(transaction);
+    // for PoC if res > 0 it means a policy is not respected
+    const res = verifyPolicyWithTrace(transaction.contractAddress, policyFromEvents, trace);
+    if ( res.length == 0 ) {
+      const signedTransaction = signTransactionHash(transaction);
+      return signedTransaction;
+    } else {
+      throw res;
+    }
+  } catch (error) {
+    throw error
+  }
+}
+
+/**
+ * This takes a policy and returns a base64 and a Array<feltEncodedString> of a policy
+ * This currently does not check if a policy is valid 
+ * @param policy array<Policy>
+ * @returns base64 encoded policy and a Array<feltEncodedString> of a policy
+ */
+const encodePolicy = (policy: Policy): {base64: string, feltEncoded: Array<string>}  => {
+  const base64 = Buffer.from(JSON.stringify(policy)).toString('base64');
+  const policyArray = base64.match(/.{1,31}/g) || [];
+  const feltEncoded = policyArray.map( elem => shortString.encodeShortString(elem));
+  return {
+    base64,
+    feltEncoded
+  }
+}
+
+/**
  * recursively returns an array of events, if the current internal has an events field populated
  * this events has to match the selector we are watching
  * @param {*} trace 
@@ -109,30 +149,6 @@ const getPolicyFromEvents = async(account: string, signer: string): Promise<Poli
 } 
 
 /**
- * 
- * @param signer Signer used by the user for this transaction. Used to fetch correct policy
- * @param transaction Signed transaction the user wants to perform
- * @returns 200: A signature of the tx by the starkCheck key. 
- * @returns 400: The list of events that does not respect the policy. 
- */
-const verifyPolicy = async (signer: string, transaction: Invocation & InvocationsDetailsWithNonce): Promise<Signature> => {
-  try {
-    const policyFromEvents = await getPolicyFromEvents(transaction.contractAddress, signer);
-    let trace: TransactionTraceResponse = await getTrace(transaction);
-    // for PoC if res > 0 it means a policy is not respected
-    const res = verifyPolicyWithTrace(transaction.contractAddress, policyFromEvents, trace);
-    if ( res.length == 0 ) {
-      const signedTransaction = signTransactionHash(transaction);
-      return signedTransaction;
-    } else {
-      throw res;
-    }
-  } catch (error) {
-    throw error
-  }
-}
-
-/**
  * If an address is in the 0x0 format change it to 0x
  * @param policy 
  * @returns 
@@ -172,24 +188,6 @@ const findNFTIds = (policy: Policy, event: FunctionInvocation): boolean => {
   if ( !policy.ids || event.selector == approveAllSelector ) return true;
   return policy.ids.map( id => number.toBN(id) ).reduce( (flag, idBn) => flag || idBn.eq(number.toBN(event.calldata[1])), false);
 }
- 
-/**
- * This takes a policy and returns a base64 and a Array<feltEncodedString> of a policy
- * This currently does not check if a policy is valid 
- * @param policy array<Policy>
- * @returns base64 encoded policy and a Array<feltEncodedString> of a policy
- */
-const encodePolicy = (policy: Policy): {base64: string, feltEncoded: Array<string>}  => {
-  const base64 = Buffer.from(JSON.stringify(policy)).toString('base64');
-  const policyArray = base64.match(/.{1,31}/g) || [];
-  const feltEncoded = policyArray.map( elem => shortString.encodeShortString(elem));
-  return {
-    base64,
-    feltEncoded
-  }
-}
-
-
 
 export default { verifyPolicy, verifyPolicyWithTrace, encodePolicy }
 
