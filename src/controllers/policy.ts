@@ -26,10 +26,9 @@ const verifyPolicy = async (req: Request, res: Response, next: NextFunction) => 
 
 const encodePolicy = async (req: Request, res: Response, next: NextFunction) => {
     // get the data from req.body
-    let signer: string = req.body.signer;
-    let policy: Policy = req.body.transaction;
+    let policy: Policy = req.body.policy;
     try {
-        const policyEncoded = await policyService.encodePolicy(signer, policy);
+        const policyEncoded = await policyService.encodePolicy(policy);
         return res.status(200).json({
             policyEncoded
         });

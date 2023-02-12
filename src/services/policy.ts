@@ -148,10 +148,13 @@ const findNFTIds = (event: any, policy: Policy): boolean => {
   return policy.ids.map( id => number.toBN(id) ).reduce( (flag, idBn) => flag || idBn.eq(number.toBN(event.calldata[1])), false);
 }
  
-const encodePolicy = (signer: string,policy: Policy): {base64: string, feltEncoded: Array<string>}  => {
+const encodePolicy = (policy: Policy): {base64: string, feltEncoded: Array<string>}  => {
+  const base64 = Buffer.from(JSON.stringify(policy)).toString('base64');
+  const policyArray = base64.match(/.{1,31}/g) || [];
+  const feltEncoded = policyArray.map( elem => shortString.encodeShortString(elem));
   return {
-    base64: '',
-    feltEncoded: ['']
+    base64,
+    feltEncoded
   }
 }
 
