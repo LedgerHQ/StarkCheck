@@ -1,4 +1,4 @@
-import { SequencerProvider, RpcProvider, RPC, number, InvocationsDetailsWithNonce, Invocation, shortString, Signature, TransactionSimulationResponse, TransactionTraceResponse } from "starknet";
+import { SequencerProvider, RpcProvider, RPC, number, InvocationsDetailsWithNonce, Invocation, shortString, Signature, TransactionSimulationResponse, TransactionTraceResponse, FunctionInvocation } from "starknet";
 import { Policy } from '../types/policy';
 const approveSelector = "0x219209e083275171774dab1df80982e9df2096516f06319c5c6d71ae0a8480c";
 const approveAllSelector = "0x2d4c8ea4c8fb9f571d1f6f9b7692fff8e5ceaf73b1df98e7da8c1109b39ae9a";
@@ -21,7 +21,7 @@ const rpcPovider = new RpcProvider({ nodeUrl: process.env.NODE_RPC_URL || "" });
  * @param {*} trace 
  * @returns Arrray of Events
  */
- const extractEvents = (trace: any) => {
+ const extractEvents = (trace: FunctionInvocation): Array<FunctionInvocation> => {
   return trace.events.length && (
       trace.selector == approveSelector || 
       trace.selector == approveAllSelector || 
@@ -118,7 +118,7 @@ const getPolicyFromEvents = async(account: string, signer: string): Promise<Poli
 const verifyPolicy = async (signer: string, transaction: Invocation & InvocationsDetailsWithNonce): Promise<Signature> => {
   try {
     const policyFromEvents = await getPolicyFromEvents(transaction.contractAddress, signer);
-    let trace: any = await getTrace(transaction);
+    let trace: TransactionTraceResponse = await getTrace(transaction);
     // for PoC if res > 0 it means a policy is not respected
     const res = verifyPolicyWithTrace(transaction.contractAddress, policyFromEvents, trace);
     if ( res.length == 0 ) {
@@ -150,20 +150,25 @@ const sanitize0x = (policy: Policy): Policy => {
  * @param trace Trace of the transaction that will be executed
  * @returns The list of events that does not respect a policy
  */
-const verifyPolicyWithTrace = (account: string, policies: Policy[], trace: any) => {
+const verifyPolicyWithTrace = (account: string, policies: Policy[], trace: TransactionTraceResponse) => {
   const policySanitized: Policy[] = policies.map(sanitize0x);
   const accountSatinized: string = account.replace("0x0", "0x");
-  const events = extractEvents(trace.function_invocation);
+  const events: Array<FunctionInvocation> = trace.function_invocation ? extractEvents(trace.function_invocation): [];
   return events.filter( (event: any) => 
     policySanitized.reduce( (flag, policy) => flag || (event.caller_address == accountSatinized) 
       && (policy.address == event.contract_address) 
-      && number.toBN(policy.amount || "0", 10).lte(number.toBN(event.calldata[1])) // note: should branch if no amount 
-      && findNFTIds(event, policy)
+      && checkAmount(policy, event) // note: should branch if no amount 
+      && findNFTIds(policy, event)
       , false)
     );
 }
 
-const findNFTIds = (event: any, policy: Policy): boolean => {
+const checkAmount = (policy: Policy, event: FunctionInvocation ): boolean => {
+  if ( !policy.amount ) return true;
+  return number.toBN(policy.amount || "0", 10).lte(number.toBN(event.calldata[1]));
+}
+
+const findNFTIds = (policy: Policy, event: FunctionInvocation): boolean => {
   if ( !policy.ids || event.selector == approveAllSelector ) return true;
   return policy.ids.map( id => number.toBN(id) ).reduce( (flag, idBn) => flag || idBn.eq(number.toBN(event.calldata[1])), false);
 }
