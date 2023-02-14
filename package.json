@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "description": "Public API for Ledger StarkCheck",
     "author": "innovation@ledger.fr",
-    "license": "MIT",
+    "license": "Apache-2.0",
     "scripts": {
         "dev": "nodemon src/server.ts",
         "build": "rm -rf build/ && prettier --write source/ && tsc",
