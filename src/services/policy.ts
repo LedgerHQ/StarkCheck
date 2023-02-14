@@ -11,7 +11,7 @@ import { signTransactionHash } from './signer';
 require('dotenv').config()
 
 const network: any = process.env.NETWORK || "goerli-alpha";
-const SET_POLICY_EVENT_SELECTOR = "0x302e25484ae07e6b4f3f8dab280ac0e8f921a0d73b2a39d2fe7fcbc03b8f9d5";
+const SET_POLICY_EVENT_SELECTOR = "0xa79c31a86c9b0b2abf73ad994711fbad4da038921b96087ff074964aecc528";
 const provider = new SequencerProvider({ network });
 const rpcPovider = new RpcProvider({ nodeUrl: process.env.NODE_RPC_URL || "" });
 
