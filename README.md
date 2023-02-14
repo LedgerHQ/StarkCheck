@@ -59,7 +59,7 @@ The event looks like this
 
 ## tests
 
-    npm tests
+    npm test
 
 Tests are run against real trace transactions made onchain. On note.md you can see on starkscan the transaction.
 To extract its trace run 
