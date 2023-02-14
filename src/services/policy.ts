@@ -170,20 +170,42 @@ const verifyPolicyWithTrace = (account: string, policies: Policy[], trace: Trans
   const policySanitized: Policy[] = policies.map(sanitize0x);
   const accountSatinized: string = account.replace("0x0", "0x");
   const events: Array<FunctionInvocation> = trace.function_invocation ? extractEvents(trace.function_invocation): [];
+  // Loop through all events with transfer/approve/etc selectors
   return events.filter( (event: any) => 
-    policySanitized.reduce( (flag, policy) => flag || (event.caller_address == accountSatinized) 
-      && (policy.address == event.contract_address) 
-      && checkAmount(policy, event) // note: should branch if no amount 
+    // for each event, loop through each policy to check if it respects it
+    policySanitized.reduce( (flag, policy) => flag 
+      || (
+      event.caller_address == accountSatinized // check if caller of the approve/transfer is our account
+      && (policy.address == event.contract_address) // check if contract called is the one defined in this policy
+      && checkAmount(policy, event)
       && findNFTIds(policy, event)
+      )
       , false)
     );
 }
 
+/**
+ * Check if the amount of a call to an ERC20 is under the max amount in the policy
+ * If there is no amount, this means this policy is not ERC20 related and we return true
+ * if not ERC20 the flag will be turn to false by other checks
+ * @param policy 
+ * @param event 
+ * @returns false if pass, true if amount is higher than policy or not ERC20 related
+ */
 const checkAmount = (policy: Policy, event: FunctionInvocation ): boolean => {
   if ( !policy.amount ) return true;
-  return number.toBN(policy.amount || "0", 10).lte(number.toBN(event.calldata[1]));
+  return number.toBN(policy.amount, 10).lte(number.toBN(event.calldata[1]));
 }
 
+/**
+ * Check if the approve/transfer respect an NFT policy
+ * If ids is undefined it means all the collection is protected or not NFT related
+ * In both cases we return true (if nft this will flag the transfer)
+ * if not nft the flag will be turn to false by other checks 
+ * @param policy 
+ * @param event 
+ * @returns false if pass, true if protected id is transfered or if approveAll is called
+ */
 const findNFTIds = (policy: Policy, event: FunctionInvocation): boolean => {
   if ( !policy.ids || event.selector == approveAllSelector ) return true;
   return policy.ids.map( id => number.toBN(id) ).reduce( (flag, idBn) => flag || idBn.eq(number.toBN(event.calldata[1])), false);
