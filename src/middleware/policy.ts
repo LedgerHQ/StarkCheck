@@ -21,7 +21,7 @@ export const policyCheckMiddleware = () => (
     } else {
         const policyFormatOk = !req.body.policy.reduce( (res: boolean, pol: any) => {
             const key = Object.keys(pol);
-            const ok = key.includes("address") && (key.includes("ids") && Array.isArray(pol.ids) || key.includes("amount"))
+            const ok = typeof pol.address === 'string' && (Array.isArray(pol.ids) || key.includes("amount"))
             return res || !ok;
         }, false)
         if (policyFormatOk) {
