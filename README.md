@@ -16,7 +16,7 @@ This API expose a route to submit a sign transaction with the signer pub_key. Un
  - Simulate the transaction to get its trace
  - On the trace get all events that are related to approve and transfer
  - check that the policy is respected
- - Sign the transactionHash is the policy is respected. Else returns the events that does not respect the policy
+ - Sign the transactionHash is the policy is respected. Else returns the number of events that does not respect the policy
 
 it also exposes routes to encode/decode a Policy
 

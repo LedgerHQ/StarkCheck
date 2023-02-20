@@ -32,7 +32,7 @@ const verifyPolicy = async (signer: string, transaction: Invocation & Invocation
       const signedTransaction = signTransactionHash(transaction);
       return signedTransaction;
     } else {
-      throw res;
+      throw `${res.length} event(s) found that does not respect the policy`;
     }
   } catch (error) {
     throw error
