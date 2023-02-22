@@ -1,0 +1,9 @@
+{
+    "account": "0x1f06411b4a90bbf68392eda09d08cdee470d15bed29e3c91948f5632d9a66d8",
+    "policy": [
+        {
+            "address": "0x727a63f78ee3f1bd18f78009067411ab369c31dece1ae22e16f567906409905",
+            "ids": ["0x2214","0x2218"]
+        }
+    ]
+}

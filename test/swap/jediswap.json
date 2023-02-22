@@ -1,0 +1,1401 @@
+{
+    "fee_transfer_invocation": {
+        "call_type": "CALL",
+        "calldata": [
+            "0x5dcd266a80b8a5f29f04d779c6b166b80150c24f2180a75e82427242dab20a9",
+            "0x166bb92977543",
+            "0x0"
+        ],
+        "caller_address": "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+        "class_hash": "0xd0e183745e9dae3e4e78a8ffedcce0903fc4900beace4e0abf192d4c202da3",
+        "contract_address": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+        "entry_point_type": "EXTERNAL",
+        "events": [],
+        "execution_resources": {
+            "builtin_instance_counter": {
+                "pedersen_builtin": 4,
+                "range_check_builtin": 21
+            },
+            "n_memory_holes": 40,
+            "n_steps": 590
+        },
+        "internal_calls": [
+            {
+                "call_type": "DELEGATE",
+                "calldata": [
+                    "0x5dcd266a80b8a5f29f04d779c6b166b80150c24f2180a75e82427242dab20a9",
+                    "0x166bb92977543",
+                    "0x0"
+                ],
+                "caller_address": "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+                "class_hash": "0x2760f25d5a4fb2bdde5f561fd0b44a3dee78c28903577d37d669939d97036a0",
+                "contract_address": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+                "entry_point_type": "EXTERNAL",
+                "events": [
+                    {
+                        "data": [
+                            "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+                            "0x5dcd266a80b8a5f29f04d779c6b166b80150c24f2180a75e82427242dab20a9",
+                            "0x166bb92977543",
+                            "0x0"
+                        ],
+                        "keys": [
+                            "0x99cd8bde557814842a3121e8ddfd433a539b8c9f14bf31ebf108d12e6196e9"
+                        ],
+                        "order": 0
+                    }
+                ],
+                "execution_resources": {
+                    "builtin_instance_counter": {
+                        "pedersen_builtin": 4,
+                        "range_check_builtin": 21
+                    },
+                    "n_memory_holes": 40,
+                    "n_steps": 530
+                },
+                "internal_calls": [],
+                "messages": [],
+                "result": [
+                    "0x1"
+                ],
+                "selector": "0x83afd3f4caedc6eebf44246fe54e38c95e3179a5ec9ea81740eca5b482d12e"
+            }
+        ],
+        "messages": [],
+        "result": [
+            "0x1"
+        ],
+        "selector": "0x83afd3f4caedc6eebf44246fe54e38c95e3179a5ec9ea81740eca5b482d12e"
+    },
+    "function_invocation": {
+        "call_type": "CALL",
+        "calldata": [
+            "0x2",
+            "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+            "0x219209e083275171774dab1df80982e9df2096516f06319c5c6d71ae0a8480c",
+            "0x0",
+            "0x3",
+            "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+            "0x3276861cf5e05d6daf8f352cabb47df623eb10c383ab742fcc7abea94d5c5cc",
+            "0x3",
+            "0xa",
+            "0xd",
+            "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+            "0x2035b3a197ff7",
+            "0x0",
+            "0x2035b3a197ff7",
+            "0x0",
+            "0xc14df29e5e96a75",
+            "0x0",
+            "0x3",
+            "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+            "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
+            "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
+            "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+            "0x63d1890b"
+        ],
+        "caller_address": "0x0",
+        "class_hash": "0x25ec026985a3bf9d0cc1fe17326b245dfdc3ff89b8fde106542a3ea56c5a918",
+        "contract_address": "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+        "entry_point_type": "EXTERNAL",
+        "events": [],
+        "execution_resources": {
+            "builtin_instance_counter": {
+                "pedersen_builtin": 34,
+                "range_check_builtin": 1099
+            },
+            "n_memory_holes": 1096,
+            "n_steps": 16041
+        },
+        "internal_calls": [
+            {
+                "call_type": "DELEGATE",
+                "calldata": [
+                    "0x2",
+                    "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+                    "0x219209e083275171774dab1df80982e9df2096516f06319c5c6d71ae0a8480c",
+                    "0x0",
+                    "0x3",
+                    "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                    "0x3276861cf5e05d6daf8f352cabb47df623eb10c383ab742fcc7abea94d5c5cc",
+                    "0x3",
+                    "0xa",
+                    "0xd",
+                    "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                    "0x2035b3a197ff7",
+                    "0x0",
+                    "0x2035b3a197ff7",
+                    "0x0",
+                    "0xc14df29e5e96a75",
+                    "0x0",
+                    "0x3",
+                    "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+                    "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
+                    "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
+                    "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+                    "0x63d1890b"
+                ],
+                "caller_address": "0x0",
+                "class_hash": "0x33434ad846cdd5f23eb73ff09fe6fddd568284a0fb7d1be20ee482f044dabe2",
+                "contract_address": "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+                "entry_point_type": "EXTERNAL",
+                "events": [
+                    {
+                        "data": [
+                            "0x15a14764c7386a9148ea29872cfb8c33c980449cf6fe0804f0f14811b7cec6b",
+                            "0x8",
+                            "0x1",
+                            "0x3",
+                            "0x2035b3a197ff7",
+                            "0x0",
+                            "0xd55c1",
+                            "0x0",
+                            "0xc225226c4f46a6c",
+                            "0x0"
+                        ],
+                        "keys": [
+                            "0x5ad857f66a5b55f1301ff1ed7e098ac6d4433148f0b72ebc4a2945ab85ad53"
+                        ],
+                        "order": 8
+                    }
+                ],
+                "execution_resources": {
+                    "builtin_instance_counter": {
+                        "pedersen_builtin": 34,
+                        "range_check_builtin": 1099
+                    },
+                    "n_memory_holes": 1096,
+                    "n_steps": 15981
+                },
+                "internal_calls": [
+                    {
+                        "call_type": "CALL",
+                        "calldata": [
+                            "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                            "0x2035b3a197ff7",
+                            "0x0"
+                        ],
+                        "caller_address": "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+                        "class_hash": "0xd0e183745e9dae3e4e78a8ffedcce0903fc4900beace4e0abf192d4c202da3",
+                        "contract_address": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+                        "entry_point_type": "EXTERNAL",
+                        "events": [],
+                        "execution_resources": {
+                            "builtin_instance_counter": {
+                                "pedersen_builtin": 2,
+                                "range_check_builtin": 5
+                            },
+                            "n_memory_holes": 10,
+                            "n_steps": 240
+                        },
+                        "internal_calls": [
+                            {
+                                "call_type": "DELEGATE",
+                                "calldata": [
+                                    "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                    "0x2035b3a197ff7",
+                                    "0x0"
+                                ],
+                                "caller_address": "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+                                "class_hash": "0x2760f25d5a4fb2bdde5f561fd0b44a3dee78c28903577d37d669939d97036a0",
+                                "contract_address": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+                                "entry_point_type": "EXTERNAL",
+                                "events": [
+                                    {
+                                        "data": [
+                                            "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+                                            "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                            "0x2035b3a197ff7",
+                                            "0x0"
+                                        ],
+                                        "keys": [
+                                            "0x134692b230b9e1ffa39098904722134159652b09c5bc41d88d6698779d228ff"
+                                        ],
+                                        "order": 0
+                                    }
+                                ],
+                                "execution_resources": {
+                                    "builtin_instance_counter": {
+                                        "pedersen_builtin": 2,
+                                        "range_check_builtin": 5
+                                    },
+                                    "n_memory_holes": 10,
+                                    "n_steps": 180
+                                },
+                                "internal_calls": [],
+                                "messages": [],
+                                "result": [
+                                    "0x1"
+                                ],
+                                "selector": "0x219209e083275171774dab1df80982e9df2096516f06319c5c6d71ae0a8480c"
+                            }
+                        ],
+                        "messages": [],
+                        "result": [
+                            "0x1"
+                        ],
+                        "selector": "0x219209e083275171774dab1df80982e9df2096516f06319c5c6d71ae0a8480c"
+                    },
+                    {
+                        "call_type": "CALL",
+                        "calldata": [
+                            "0x2035b3a197ff7",
+                            "0x0",
+                            "0xc14df29e5e96a75",
+                            "0x0",
+                            "0x3",
+                            "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+                            "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
+                            "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
+                            "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+                            "0x63d1890b"
+                        ],
+                        "caller_address": "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+                        "class_hash": "0x7197021c108b0cc57ae354f5ad02222c4b3d7344664e6dd602a0e2298595434",
+                        "contract_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                        "entry_point_type": "EXTERNAL",
+                        "events": [],
+                        "execution_resources": {
+                            "builtin_instance_counter": {
+                                "pedersen_builtin": 32,
+                                "range_check_builtin": 1091
+                            },
+                            "n_memory_holes": 1083,
+                            "n_steps": 15396
+                        },
+                        "internal_calls": [
+                            {
+                                "call_type": "DELEGATE",
+                                "calldata": [
+                                    "0x2035b3a197ff7",
+                                    "0x0",
+                                    "0xc14df29e5e96a75",
+                                    "0x0",
+                                    "0x3",
+                                    "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+                                    "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
+                                    "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
+                                    "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+                                    "0x63d1890b"
+                                ],
+                                "caller_address": "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+                                "class_hash": "0x64e7d628b1b2aa04a35fe6610b005689e8b591058f7f92bf4eb234e67cf403b",
+                                "contract_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                "entry_point_type": "EXTERNAL",
+                                "events": [],
+                                "execution_resources": {
+                                    "builtin_instance_counter": {
+                                        "pedersen_builtin": 32,
+                                        "range_check_builtin": 1091
+                                    },
+                                    "n_memory_holes": 1083,
+                                    "n_steps": 15336
+                                },
+                                "internal_calls": [
+                                    {
+                                        "call_type": "CALL",
+                                        "calldata": [
+                                            "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+                                            "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8"
+                                        ],
+                                        "caller_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                        "class_hash": "0x26fe8ea36ec7703569cfe4693b05102940bf122647c4dbf0abc0bb919ce27bd",
+                                        "contract_address": "0xdad44c139a476c7a17fc8141e6db680e9abc9f56fe249a105094c44382c2fd",
+                                        "entry_point_type": "EXTERNAL",
+                                        "events": [],
+                                        "execution_resources": {
+                                            "builtin_instance_counter": {
+                                                "pedersen_builtin": 2,
+                                                "range_check_builtin": 3
+                                            },
+                                            "n_memory_holes": 10,
+                                            "n_steps": 156
+                                        },
+                                        "internal_calls": [
+                                            {
+                                                "call_type": "DELEGATE",
+                                                "calldata": [
+                                                    "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+                                                    "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8"
+                                                ],
+                                                "caller_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                                "class_hash": "0x2580632f25bbee45da5a1a1ef49d03a984f78dde4019069aa9f25aac06f941a",
+                                                "contract_address": "0xdad44c139a476c7a17fc8141e6db680e9abc9f56fe249a105094c44382c2fd",
+                                                "entry_point_type": "EXTERNAL",
+                                                "events": [],
+                                                "execution_resources": {
+                                                    "builtin_instance_counter": {
+                                                        "pedersen_builtin": 2,
+                                                        "range_check_builtin": 3
+                                                    },
+                                                    "n_memory_holes": 10,
+                                                    "n_steps": 96
+                                                },
+                                                "internal_calls": [],
+                                                "messages": [],
+                                                "result": [
+                                                    "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a"
+                                                ],
+                                                "selector": "0x302cc8ef0eb956ecba01d93a13572cb13459e0a0e1ae945bd5a1bdccca6b954"
+                                            }
+                                        ],
+                                        "messages": [],
+                                        "result": [
+                                            "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a"
+                                        ],
+                                        "selector": "0x302cc8ef0eb956ecba01d93a13572cb13459e0a0e1ae945bd5a1bdccca6b954"
+                                    },
+                                    {
+                                        "call_type": "CALL",
+                                        "calldata": [],
+                                        "caller_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                        "class_hash": "0x7b5cd6a6949cc1730f89d795f2442f6ab431ea6c9a5be00685d50f97433c5eb",
+                                        "contract_address": "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a",
+                                        "entry_point_type": "EXTERNAL",
+                                        "events": [],
+                                        "execution_resources": {
+                                            "builtin_instance_counter": {},
+                                            "n_memory_holes": 0,
+                                            "n_steps": 193
+                                        },
+                                        "internal_calls": [
+                                            {
+                                                "call_type": "DELEGATE",
+                                                "calldata": [],
+                                                "caller_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                                "class_hash": "0x2b39bc3f4c1fd5bef8b7d21504c44e0da59cf27b350551b13d913da52e40d3b",
+                                                "contract_address": "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a",
+                                                "entry_point_type": "EXTERNAL",
+                                                "events": [],
+                                                "execution_resources": {
+                                                    "builtin_instance_counter": {},
+                                                    "n_memory_holes": 0,
+                                                    "n_steps": 133
+                                                },
+                                                "internal_calls": [],
+                                                "messages": [],
+                                                "result": [
+                                                    "0x35586657695513d06",
+                                                    "0x0",
+                                                    "0x1626deca0e",
+                                                    "0x0",
+                                                    "0x63d17afb"
+                                                ],
+                                                "selector": "0x3cb0e1486e633fbe3e2fafe8aedf12b70ca1860e7467ddb75a17858cde39312"
+                                            }
+                                        ],
+                                        "messages": [],
+                                        "result": [
+                                            "0x35586657695513d06",
+                                            "0x0",
+                                            "0x1626deca0e",
+                                            "0x0",
+                                            "0x63d17afb"
+                                        ],
+                                        "selector": "0x3cb0e1486e633fbe3e2fafe8aedf12b70ca1860e7467ddb75a17858cde39312"
+                                    },
+                                    {
+                                        "call_type": "CALL",
+                                        "calldata": [
+                                            "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
+                                            "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8"
+                                        ],
+                                        "caller_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                        "class_hash": "0x26fe8ea36ec7703569cfe4693b05102940bf122647c4dbf0abc0bb919ce27bd",
+                                        "contract_address": "0xdad44c139a476c7a17fc8141e6db680e9abc9f56fe249a105094c44382c2fd",
+                                        "entry_point_type": "EXTERNAL",
+                                        "events": [],
+                                        "execution_resources": {
+                                            "builtin_instance_counter": {
+                                                "pedersen_builtin": 2,
+                                                "range_check_builtin": 3
+                                            },
+                                            "n_memory_holes": 10,
+                                            "n_steps": 156
+                                        },
+                                        "internal_calls": [
+                                            {
+                                                "call_type": "DELEGATE",
+                                                "calldata": [
+                                                    "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
+                                                    "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8"
+                                                ],
+                                                "caller_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                                "class_hash": "0x2580632f25bbee45da5a1a1ef49d03a984f78dde4019069aa9f25aac06f941a",
+                                                "contract_address": "0xdad44c139a476c7a17fc8141e6db680e9abc9f56fe249a105094c44382c2fd",
+                                                "entry_point_type": "EXTERNAL",
+                                                "events": [],
+                                                "execution_resources": {
+                                                    "builtin_instance_counter": {
+                                                        "pedersen_builtin": 2,
+                                                        "range_check_builtin": 3
+                                                    },
+                                                    "n_memory_holes": 10,
+                                                    "n_steps": 96
+                                                },
+                                                "internal_calls": [],
+                                                "messages": [],
+                                                "result": [
+                                                    "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b"
+                                                ],
+                                                "selector": "0x302cc8ef0eb956ecba01d93a13572cb13459e0a0e1ae945bd5a1bdccca6b954"
+                                            }
+                                        ],
+                                        "messages": [],
+                                        "result": [
+                                            "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b"
+                                        ],
+                                        "selector": "0x302cc8ef0eb956ecba01d93a13572cb13459e0a0e1ae945bd5a1bdccca6b954"
+                                    },
+                                    {
+                                        "call_type": "CALL",
+                                        "calldata": [],
+                                        "caller_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                        "class_hash": "0x7b5cd6a6949cc1730f89d795f2442f6ab431ea6c9a5be00685d50f97433c5eb",
+                                        "contract_address": "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b",
+                                        "entry_point_type": "EXTERNAL",
+                                        "events": [],
+                                        "execution_resources": {
+                                            "builtin_instance_counter": {},
+                                            "n_memory_holes": 0,
+                                            "n_steps": 193
+                                        },
+                                        "internal_calls": [
+                                            {
+                                                "call_type": "DELEGATE",
+                                                "calldata": [],
+                                                "caller_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                                "class_hash": "0x2b39bc3f4c1fd5bef8b7d21504c44e0da59cf27b350551b13d913da52e40d3b",
+                                                "contract_address": "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b",
+                                                "entry_point_type": "EXTERNAL",
+                                                "events": [],
+                                                "execution_resources": {
+                                                    "builtin_instance_counter": {},
+                                                    "n_memory_holes": 0,
+                                                    "n_steps": 133
+                                                },
+                                                "internal_calls": [],
+                                                "messages": [],
+                                                "result": [
+                                                    "0x1ede353d61fecf45047",
+                                                    "0x0",
+                                                    "0x21d168214",
+                                                    "0x0",
+                                                    "0x63d17afb"
+                                                ],
+                                                "selector": "0x3cb0e1486e633fbe3e2fafe8aedf12b70ca1860e7467ddb75a17858cde39312"
+                                            }
+                                        ],
+                                        "messages": [],
+                                        "result": [
+                                            "0x1ede353d61fecf45047",
+                                            "0x0",
+                                            "0x21d168214",
+                                            "0x0",
+                                            "0x63d17afb"
+                                        ],
+                                        "selector": "0x3cb0e1486e633fbe3e2fafe8aedf12b70ca1860e7467ddb75a17858cde39312"
+                                    },
+                                    {
+                                        "call_type": "CALL",
+                                        "calldata": [
+                                            "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+                                            "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8"
+                                        ],
+                                        "caller_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                        "class_hash": "0x26fe8ea36ec7703569cfe4693b05102940bf122647c4dbf0abc0bb919ce27bd",
+                                        "contract_address": "0xdad44c139a476c7a17fc8141e6db680e9abc9f56fe249a105094c44382c2fd",
+                                        "entry_point_type": "EXTERNAL",
+                                        "events": [],
+                                        "execution_resources": {
+                                            "builtin_instance_counter": {
+                                                "pedersen_builtin": 2,
+                                                "range_check_builtin": 3
+                                            },
+                                            "n_memory_holes": 10,
+                                            "n_steps": 156
+                                        },
+                                        "internal_calls": [
+                                            {
+                                                "call_type": "DELEGATE",
+                                                "calldata": [
+                                                    "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+                                                    "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8"
+                                                ],
+                                                "caller_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                                "class_hash": "0x2580632f25bbee45da5a1a1ef49d03a984f78dde4019069aa9f25aac06f941a",
+                                                "contract_address": "0xdad44c139a476c7a17fc8141e6db680e9abc9f56fe249a105094c44382c2fd",
+                                                "entry_point_type": "EXTERNAL",
+                                                "events": [],
+                                                "execution_resources": {
+                                                    "builtin_instance_counter": {
+                                                        "pedersen_builtin": 2,
+                                                        "range_check_builtin": 3
+                                                    },
+                                                    "n_memory_holes": 10,
+                                                    "n_steps": 96
+                                                },
+                                                "internal_calls": [],
+                                                "messages": [],
+                                                "result": [
+                                                    "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a"
+                                                ],
+                                                "selector": "0x302cc8ef0eb956ecba01d93a13572cb13459e0a0e1ae945bd5a1bdccca6b954"
+                                            }
+                                        ],
+                                        "messages": [],
+                                        "result": [
+                                            "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a"
+                                        ],
+                                        "selector": "0x302cc8ef0eb956ecba01d93a13572cb13459e0a0e1ae945bd5a1bdccca6b954"
+                                    },
+                                    {
+                                        "call_type": "CALL",
+                                        "calldata": [
+                                            "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+                                            "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a",
+                                            "0x2035b3a197ff7",
+                                            "0x0"
+                                        ],
+                                        "caller_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                        "class_hash": "0xd0e183745e9dae3e4e78a8ffedcce0903fc4900beace4e0abf192d4c202da3",
+                                        "contract_address": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+                                        "entry_point_type": "EXTERNAL",
+                                        "events": [],
+                                        "execution_resources": {
+                                            "builtin_instance_counter": {
+                                                "pedersen_builtin": 8,
+                                                "range_check_builtin": 32
+                                            },
+                                            "n_memory_holes": 62,
+                                            "n_steps": 871
+                                        },
+                                        "internal_calls": [
+                                            {
+                                                "call_type": "DELEGATE",
+                                                "calldata": [
+                                                    "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+                                                    "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a",
+                                                    "0x2035b3a197ff7",
+                                                    "0x0"
+                                                ],
+                                                "caller_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                                "class_hash": "0x2760f25d5a4fb2bdde5f561fd0b44a3dee78c28903577d37d669939d97036a0",
+                                                "contract_address": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+                                                "entry_point_type": "EXTERNAL",
+                                                "events": [
+                                                    {
+                                                        "data": [
+                                                            "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+                                                            "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a",
+                                                            "0x2035b3a197ff7",
+                                                            "0x0"
+                                                        ],
+                                                        "keys": [
+                                                            "0x99cd8bde557814842a3121e8ddfd433a539b8c9f14bf31ebf108d12e6196e9"
+                                                        ],
+                                                        "order": 1
+                                                    }
+                                                ],
+                                                "execution_resources": {
+                                                    "builtin_instance_counter": {
+                                                        "pedersen_builtin": 8,
+                                                        "range_check_builtin": 32
+                                                    },
+                                                    "n_memory_holes": 62,
+                                                    "n_steps": 811
+                                                },
+                                                "internal_calls": [],
+                                                "messages": [],
+                                                "result": [
+                                                    "0x1"
+                                                ],
+                                                "selector": "0x41b033f4a31df8067c24d1e9b550a2ce75fd4a29e1147af9752174f0e6cb20"
+                                            }
+                                        ],
+                                        "messages": [],
+                                        "result": [
+                                            "0x1"
+                                        ],
+                                        "selector": "0x41b033f4a31df8067c24d1e9b550a2ce75fd4a29e1147af9752174f0e6cb20"
+                                    },
+                                    {
+                                        "call_type": "CALL",
+                                        "calldata": [
+                                            "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
+                                            "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8"
+                                        ],
+                                        "caller_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                        "class_hash": "0x26fe8ea36ec7703569cfe4693b05102940bf122647c4dbf0abc0bb919ce27bd",
+                                        "contract_address": "0xdad44c139a476c7a17fc8141e6db680e9abc9f56fe249a105094c44382c2fd",
+                                        "entry_point_type": "EXTERNAL",
+                                        "events": [],
+                                        "execution_resources": {
+                                            "builtin_instance_counter": {
+                                                "pedersen_builtin": 2,
+                                                "range_check_builtin": 3
+                                            },
+                                            "n_memory_holes": 10,
+                                            "n_steps": 156
+                                        },
+                                        "internal_calls": [
+                                            {
+                                                "call_type": "DELEGATE",
+                                                "calldata": [
+                                                    "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
+                                                    "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8"
+                                                ],
+                                                "caller_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                                "class_hash": "0x2580632f25bbee45da5a1a1ef49d03a984f78dde4019069aa9f25aac06f941a",
+                                                "contract_address": "0xdad44c139a476c7a17fc8141e6db680e9abc9f56fe249a105094c44382c2fd",
+                                                "entry_point_type": "EXTERNAL",
+                                                "events": [],
+                                                "execution_resources": {
+                                                    "builtin_instance_counter": {
+                                                        "pedersen_builtin": 2,
+                                                        "range_check_builtin": 3
+                                                    },
+                                                    "n_memory_holes": 10,
+                                                    "n_steps": 96
+                                                },
+                                                "internal_calls": [],
+                                                "messages": [],
+                                                "result": [
+                                                    "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b"
+                                                ],
+                                                "selector": "0x302cc8ef0eb956ecba01d93a13572cb13459e0a0e1ae945bd5a1bdccca6b954"
+                                            }
+                                        ],
+                                        "messages": [],
+                                        "result": [
+                                            "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b"
+                                        ],
+                                        "selector": "0x302cc8ef0eb956ecba01d93a13572cb13459e0a0e1ae945bd5a1bdccca6b954"
+                                    },
+                                    {
+                                        "call_type": "CALL",
+                                        "calldata": [
+                                            "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+                                            "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8"
+                                        ],
+                                        "caller_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                        "class_hash": "0x26fe8ea36ec7703569cfe4693b05102940bf122647c4dbf0abc0bb919ce27bd",
+                                        "contract_address": "0xdad44c139a476c7a17fc8141e6db680e9abc9f56fe249a105094c44382c2fd",
+                                        "entry_point_type": "EXTERNAL",
+                                        "events": [],
+                                        "execution_resources": {
+                                            "builtin_instance_counter": {
+                                                "pedersen_builtin": 2,
+                                                "range_check_builtin": 3
+                                            },
+                                            "n_memory_holes": 10,
+                                            "n_steps": 156
+                                        },
+                                        "internal_calls": [
+                                            {
+                                                "call_type": "DELEGATE",
+                                                "calldata": [
+                                                    "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+                                                    "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8"
+                                                ],
+                                                "caller_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                                "class_hash": "0x2580632f25bbee45da5a1a1ef49d03a984f78dde4019069aa9f25aac06f941a",
+                                                "contract_address": "0xdad44c139a476c7a17fc8141e6db680e9abc9f56fe249a105094c44382c2fd",
+                                                "entry_point_type": "EXTERNAL",
+                                                "events": [],
+                                                "execution_resources": {
+                                                    "builtin_instance_counter": {
+                                                        "pedersen_builtin": 2,
+                                                        "range_check_builtin": 3
+                                                    },
+                                                    "n_memory_holes": 10,
+                                                    "n_steps": 96
+                                                },
+                                                "internal_calls": [],
+                                                "messages": [],
+                                                "result": [
+                                                    "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a"
+                                                ],
+                                                "selector": "0x302cc8ef0eb956ecba01d93a13572cb13459e0a0e1ae945bd5a1bdccca6b954"
+                                            }
+                                        ],
+                                        "messages": [],
+                                        "result": [
+                                            "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a"
+                                        ],
+                                        "selector": "0x302cc8ef0eb956ecba01d93a13572cb13459e0a0e1ae945bd5a1bdccca6b954"
+                                    },
+                                    {
+                                        "call_type": "CALL",
+                                        "calldata": [
+                                            "0x0",
+                                            "0x0",
+                                            "0xd55c1",
+                                            "0x0",
+                                            "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b",
+                                            "0x0"
+                                        ],
+                                        "caller_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                        "class_hash": "0x7b5cd6a6949cc1730f89d795f2442f6ab431ea6c9a5be00685d50f97433c5eb",
+                                        "contract_address": "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a",
+                                        "entry_point_type": "EXTERNAL",
+                                        "events": [],
+                                        "execution_resources": {
+                                            "builtin_instance_counter": {
+                                                "pedersen_builtin": 6,
+                                                "range_check_builtin": 341
+                                            },
+                                            "n_memory_holes": 349,
+                                            "n_steps": 4591
+                                        },
+                                        "internal_calls": [
+                                            {
+                                                "call_type": "DELEGATE",
+                                                "calldata": [
+                                                    "0x0",
+                                                    "0x0",
+                                                    "0xd55c1",
+                                                    "0x0",
+                                                    "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b",
+                                                    "0x0"
+                                                ],
+                                                "caller_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                                "class_hash": "0x2b39bc3f4c1fd5bef8b7d21504c44e0da59cf27b350551b13d913da52e40d3b",
+                                                "contract_address": "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a",
+                                                "entry_point_type": "EXTERNAL",
+                                                "events": [
+                                                    {
+                                                        "data": [
+                                                            "0x3558868d1cf6abcfd",
+                                                            "0x0",
+                                                            "0x1626d1744d",
+                                                            "0x0"
+                                                        ],
+                                                        "keys": [
+                                                            "0xe14a408baf7f453312eec68e9b7d728ec5337fbdf671f917ee8c80f3255232"
+                                                        ],
+                                                        "order": 3
+                                                    },
+                                                    {
+                                                        "data": [
+                                                            "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                                            "0x2035b3a197ff7",
+                                                            "0x0",
+                                                            "0x0",
+                                                            "0x0",
+                                                            "0x0",
+                                                            "0x0",
+                                                            "0xd55c1",
+                                                            "0x0",
+                                                            "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b"
+                                                        ],
+                                                        "keys": [
+                                                            "0xe316f0d9d2a3affa97de1d99bb2aac0538e2666d0d8545545ead241ef0ccab"
+                                                        ],
+                                                        "order": 4
+                                                    }
+                                                ],
+                                                "execution_resources": {
+                                                    "builtin_instance_counter": {
+                                                        "pedersen_builtin": 6,
+                                                        "range_check_builtin": 341
+                                                    },
+                                                    "n_memory_holes": 349,
+                                                    "n_steps": 4531
+                                                },
+                                                "internal_calls": [
+                                                    {
+                                                        "call_type": "CALL",
+                                                        "calldata": [
+                                                            "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b",
+                                                            "0xd55c1",
+                                                            "0x0"
+                                                        ],
+                                                        "caller_address": "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a",
+                                                        "class_hash": "0x52c7ba99c77fc38dd3346beea6c0753c3471f2e3135af5bb837d6c9523fff62",
+                                                        "contract_address": "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
+                                                        "entry_point_type": "EXTERNAL",
+                                                        "events": [],
+                                                        "execution_resources": {
+                                                            "builtin_instance_counter": {
+                                                                "pedersen_builtin": 4,
+                                                                "range_check_builtin": 21
+                                                            },
+                                                            "n_memory_holes": 42,
+                                                            "n_steps": 586
+                                                        },
+                                                        "internal_calls": [
+                                                            {
+                                                                "call_type": "DELEGATE",
+                                                                "calldata": [
+                                                                    "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b",
+                                                                    "0xd55c1",
+                                                                    "0x0"
+                                                                ],
+                                                                "caller_address": "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a",
+                                                                "class_hash": "0x2760f25d5a4fb2bdde5f561fd0b44a3dee78c28903577d37d669939d97036a0",
+                                                                "contract_address": "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
+                                                                "entry_point_type": "EXTERNAL",
+                                                                "events": [
+                                                                    {
+                                                                        "data": [
+                                                                            "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a",
+                                                                            "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b",
+                                                                            "0xd55c1",
+                                                                            "0x0"
+                                                                        ],
+                                                                        "keys": [
+                                                                            "0x99cd8bde557814842a3121e8ddfd433a539b8c9f14bf31ebf108d12e6196e9"
+                                                                        ],
+                                                                        "order": 2
+                                                                    }
+                                                                ],
+                                                                "execution_resources": {
+                                                                    "builtin_instance_counter": {
+                                                                        "pedersen_builtin": 4,
+                                                                        "range_check_builtin": 21
+                                                                    },
+                                                                    "n_memory_holes": 42,
+                                                                    "n_steps": 526
+                                                                },
+                                                                "internal_calls": [],
+                                                                "messages": [],
+                                                                "result": [
+                                                                    "0x1"
+                                                                ],
+                                                                "selector": "0x83afd3f4caedc6eebf44246fe54e38c95e3179a5ec9ea81740eca5b482d12e"
+                                                            }
+                                                        ],
+                                                        "messages": [],
+                                                        "result": [
+                                                            "0x1"
+                                                        ],
+                                                        "selector": "0x83afd3f4caedc6eebf44246fe54e38c95e3179a5ec9ea81740eca5b482d12e"
+                                                    },
+                                                    {
+                                                        "call_type": "CALL",
+                                                        "calldata": [
+                                                            "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a"
+                                                        ],
+                                                        "caller_address": "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a",
+                                                        "class_hash": "0xd0e183745e9dae3e4e78a8ffedcce0903fc4900beace4e0abf192d4c202da3",
+                                                        "contract_address": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+                                                        "entry_point_type": "EXTERNAL",
+                                                        "events": [],
+                                                        "execution_resources": {
+                                                            "builtin_instance_counter": {
+                                                                "pedersen_builtin": 1,
+                                                                "range_check_builtin": 3
+                                                            },
+                                                            "n_memory_holes": 11,
+                                                            "n_steps": 153
+                                                        },
+                                                        "internal_calls": [
+                                                            {
+                                                                "call_type": "DELEGATE",
+                                                                "calldata": [
+                                                                    "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a"
+                                                                ],
+                                                                "caller_address": "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a",
+                                                                "class_hash": "0x2760f25d5a4fb2bdde5f561fd0b44a3dee78c28903577d37d669939d97036a0",
+                                                                "contract_address": "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+                                                                "entry_point_type": "EXTERNAL",
+                                                                "events": [],
+                                                                "execution_resources": {
+                                                                    "builtin_instance_counter": {
+                                                                        "pedersen_builtin": 1,
+                                                                        "range_check_builtin": 3
+                                                                    },
+                                                                    "n_memory_holes": 11,
+                                                                    "n_steps": 93
+                                                                },
+                                                                "internal_calls": [],
+                                                                "messages": [],
+                                                                "result": [
+                                                                    "0x3558868d1cf6abcfd",
+                                                                    "0x0"
+                                                                ],
+                                                                "selector": "0x2e4263afad30923c891518314c3c95dbe830a16874e8abc5777a9a20b54c76e"
+                                                            }
+                                                        ],
+                                                        "messages": [],
+                                                        "result": [
+                                                            "0x3558868d1cf6abcfd",
+                                                            "0x0"
+                                                        ],
+                                                        "selector": "0x2e4263afad30923c891518314c3c95dbe830a16874e8abc5777a9a20b54c76e"
+                                                    },
+                                                    {
+                                                        "call_type": "CALL",
+                                                        "calldata": [
+                                                            "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a"
+                                                        ],
+                                                        "caller_address": "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a",
+                                                        "class_hash": "0x52c7ba99c77fc38dd3346beea6c0753c3471f2e3135af5bb837d6c9523fff62",
+                                                        "contract_address": "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
+                                                        "entry_point_type": "EXTERNAL",
+                                                        "events": [],
+                                                        "execution_resources": {
+                                                            "builtin_instance_counter": {
+                                                                "pedersen_builtin": 1,
+                                                                "range_check_builtin": 3
+                                                            },
+                                                            "n_memory_holes": 11,
+                                                            "n_steps": 153
+                                                        },
+                                                        "internal_calls": [
+                                                            {
+                                                                "call_type": "DELEGATE",
+                                                                "calldata": [
+                                                                    "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a"
+                                                                ],
+                                                                "caller_address": "0x4d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a",
+                                                                "class_hash": "0x2760f25d5a4fb2bdde5f561fd0b44a3dee78c28903577d37d669939d97036a0",
+                                                                "contract_address": "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
+                                                                "entry_point_type": "EXTERNAL",
+                                                                "events": [],
+                                                                "execution_resources": {
+                                                                    "builtin_instance_counter": {
+                                                                        "pedersen_builtin": 1,
+                                                                        "range_check_builtin": 3
+                                                                    },
+                                                                    "n_memory_holes": 11,
+                                                                    "n_steps": 93
+                                                                },
+                                                                "internal_calls": [],
+                                                                "messages": [],
+                                                                "result": [
+                                                                    "0x1626d1744d",
+                                                                    "0x0"
+                                                                ],
+                                                                "selector": "0x2e4263afad30923c891518314c3c95dbe830a16874e8abc5777a9a20b54c76e"
+                                                            }
+                                                        ],
+                                                        "messages": [],
+                                                        "result": [
+                                                            "0x1626d1744d",
+                                                            "0x0"
+                                                        ],
+                                                        "selector": "0x2e4263afad30923c891518314c3c95dbe830a16874e8abc5777a9a20b54c76e"
+                                                    }
+                                                ],
+                                                "messages": [],
+                                                "result": [],
+                                                "selector": "0x15543c3708653cda9d418b4ccd3be11368e40636c10c44b18cfe756b6d88b29"
+                                            }
+                                        ],
+                                        "messages": [],
+                                        "result": [],
+                                        "selector": "0x15543c3708653cda9d418b4ccd3be11368e40636c10c44b18cfe756b6d88b29"
+                                    },
+                                    {
+                                        "call_type": "CALL",
+                                        "calldata": [
+                                            "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
+                                            "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8"
+                                        ],
+                                        "caller_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                        "class_hash": "0x26fe8ea36ec7703569cfe4693b05102940bf122647c4dbf0abc0bb919ce27bd",
+                                        "contract_address": "0xdad44c139a476c7a17fc8141e6db680e9abc9f56fe249a105094c44382c2fd",
+                                        "entry_point_type": "EXTERNAL",
+                                        "events": [],
+                                        "execution_resources": {
+                                            "builtin_instance_counter": {
+                                                "pedersen_builtin": 2,
+                                                "range_check_builtin": 3
+                                            },
+                                            "n_memory_holes": 10,
+                                            "n_steps": 156
+                                        },
+                                        "internal_calls": [
+                                            {
+                                                "call_type": "DELEGATE",
+                                                "calldata": [
+                                                    "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
+                                                    "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8"
+                                                ],
+                                                "caller_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                                "class_hash": "0x2580632f25bbee45da5a1a1ef49d03a984f78dde4019069aa9f25aac06f941a",
+                                                "contract_address": "0xdad44c139a476c7a17fc8141e6db680e9abc9f56fe249a105094c44382c2fd",
+                                                "entry_point_type": "EXTERNAL",
+                                                "events": [],
+                                                "execution_resources": {
+                                                    "builtin_instance_counter": {
+                                                        "pedersen_builtin": 2,
+                                                        "range_check_builtin": 3
+                                                    },
+                                                    "n_memory_holes": 10,
+                                                    "n_steps": 96
+                                                },
+                                                "internal_calls": [],
+                                                "messages": [],
+                                                "result": [
+                                                    "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b"
+                                                ],
+                                                "selector": "0x302cc8ef0eb956ecba01d93a13572cb13459e0a0e1ae945bd5a1bdccca6b954"
+                                            }
+                                        ],
+                                        "messages": [],
+                                        "result": [
+                                            "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b"
+                                        ],
+                                        "selector": "0x302cc8ef0eb956ecba01d93a13572cb13459e0a0e1ae945bd5a1bdccca6b954"
+                                    },
+                                    {
+                                        "call_type": "CALL",
+                                        "calldata": [
+                                            "0xc225226c4f46a6c",
+                                            "0x0",
+                                            "0x0",
+                                            "0x0",
+                                            "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+                                            "0x0"
+                                        ],
+                                        "caller_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                        "class_hash": "0x7b5cd6a6949cc1730f89d795f2442f6ab431ea6c9a5be00685d50f97433c5eb",
+                                        "contract_address": "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b",
+                                        "entry_point_type": "EXTERNAL",
+                                        "events": [],
+                                        "execution_resources": {
+                                            "builtin_instance_counter": {
+                                                "pedersen_builtin": 6,
+                                                "range_check_builtin": 341
+                                            },
+                                            "n_memory_holes": 347,
+                                            "n_steps": 4509
+                                        },
+                                        "internal_calls": [
+                                            {
+                                                "call_type": "DELEGATE",
+                                                "calldata": [
+                                                    "0xc225226c4f46a6c",
+                                                    "0x0",
+                                                    "0x0",
+                                                    "0x0",
+                                                    "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+                                                    "0x0"
+                                                ],
+                                                "caller_address": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                                "class_hash": "0x2b39bc3f4c1fd5bef8b7d21504c44e0da59cf27b350551b13d913da52e40d3b",
+                                                "contract_address": "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b",
+                                                "entry_point_type": "EXTERNAL",
+                                                "events": [
+                                                    {
+                                                        "data": [
+                                                            "0x1edd73183f927ffe5db",
+                                                            "0x0",
+                                                            "0x21d23d7d5",
+                                                            "0x0"
+                                                        ],
+                                                        "keys": [
+                                                            "0xe14a408baf7f453312eec68e9b7d728ec5337fbdf671f917ee8c80f3255232"
+                                                        ],
+                                                        "order": 6
+                                                    },
+                                                    {
+                                                        "data": [
+                                                            "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                                                            "0x0",
+                                                            "0x0",
+                                                            "0xd55c1",
+                                                            "0x0",
+                                                            "0xc225226c4f46a6c",
+                                                            "0x0",
+                                                            "0x0",
+                                                            "0x0",
+                                                            "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c"
+                                                        ],
+                                                        "keys": [
+                                                            "0xe316f0d9d2a3affa97de1d99bb2aac0538e2666d0d8545545ead241ef0ccab"
+                                                        ],
+                                                        "order": 7
+                                                    }
+                                                ],
+                                                "execution_resources": {
+                                                    "builtin_instance_counter": {
+                                                        "pedersen_builtin": 6,
+                                                        "range_check_builtin": 341
+                                                    },
+                                                    "n_memory_holes": 347,
+                                                    "n_steps": 4449
+                                                },
+                                                "internal_calls": [
+                                                    {
+                                                        "call_type": "CALL",
+                                                        "calldata": [
+                                                            "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+                                                            "0xc225226c4f46a6c",
+                                                            "0x0"
+                                                        ],
+                                                        "caller_address": "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b",
+                                                        "class_hash": "0x1cb96b938da26c060d5fd807eef8b580c49490926393a5eeb408a89f84b9b46",
+                                                        "contract_address": "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
+                                                        "entry_point_type": "EXTERNAL",
+                                                        "events": [
+                                                            {
+                                                                "data": [
+                                                                    "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b",
+                                                                    "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+                                                                    "0xc225226c4f46a6c",
+                                                                    "0x0"
+                                                                ],
+                                                                "keys": [
+                                                                    "0x99cd8bde557814842a3121e8ddfd433a539b8c9f14bf31ebf108d12e6196e9"
+                                                                ],
+                                                                "order": 5
+                                                            }
+                                                        ],
+                                                        "execution_resources": {
+                                                            "builtin_instance_counter": {
+                                                                "pedersen_builtin": 4,
+                                                                "range_check_builtin": 21
+                                                            },
+                                                            "n_memory_holes": 42,
+                                                            "n_steps": 559
+                                                        },
+                                                        "internal_calls": [],
+                                                        "messages": [],
+                                                        "result": [
+                                                            "0x1"
+                                                        ],
+                                                        "selector": "0x83afd3f4caedc6eebf44246fe54e38c95e3179a5ec9ea81740eca5b482d12e"
+                                                    },
+                                                    {
+                                                        "call_type": "CALL",
+                                                        "calldata": [
+                                                            "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b"
+                                                        ],
+                                                        "caller_address": "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b",
+                                                        "class_hash": "0x1cb96b938da26c060d5fd807eef8b580c49490926393a5eeb408a89f84b9b46",
+                                                        "contract_address": "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
+                                                        "entry_point_type": "EXTERNAL",
+                                                        "events": [],
+                                                        "execution_resources": {
+                                                            "builtin_instance_counter": {
+                                                                "pedersen_builtin": 1,
+                                                                "range_check_builtin": 3
+                                                            },
+                                                            "n_memory_holes": 10,
+                                                            "n_steps": 96
+                                                        },
+                                                        "internal_calls": [],
+                                                        "messages": [],
+                                                        "result": [
+                                                            "0x1edd73183f927ffe5db",
+                                                            "0x0"
+                                                        ],
+                                                        "selector": "0x2e4263afad30923c891518314c3c95dbe830a16874e8abc5777a9a20b54c76e"
+                                                    },
+                                                    {
+                                                        "call_type": "CALL",
+                                                        "calldata": [
+                                                            "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b"
+                                                        ],
+                                                        "caller_address": "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b",
+                                                        "class_hash": "0x52c7ba99c77fc38dd3346beea6c0753c3471f2e3135af5bb837d6c9523fff62",
+                                                        "contract_address": "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
+                                                        "entry_point_type": "EXTERNAL",
+                                                        "events": [],
+                                                        "execution_resources": {
+                                                            "builtin_instance_counter": {
+                                                                "pedersen_builtin": 1,
+                                                                "range_check_builtin": 3
+                                                            },
+                                                            "n_memory_holes": 10,
+                                                            "n_steps": 155
+                                                        },
+                                                        "internal_calls": [
+                                                            {
+                                                                "call_type": "DELEGATE",
+                                                                "calldata": [
+                                                                    "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b"
+                                                                ],
+                                                                "caller_address": "0xcfd39f5244f7b617418c018204a8a9f9a7f72e71f0ef38f968eeb2a9ca302b",
+                                                                "class_hash": "0x2760f25d5a4fb2bdde5f561fd0b44a3dee78c28903577d37d669939d97036a0",
+                                                                "contract_address": "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
+                                                                "entry_point_type": "EXTERNAL",
+                                                                "events": [],
+                                                                "execution_resources": {
+                                                                    "builtin_instance_counter": {
+                                                                        "pedersen_builtin": 1,
+                                                                        "range_check_builtin": 3
+                                                                    },
+                                                                    "n_memory_holes": 10,
+                                                                    "n_steps": 95
+                                                                },
+                                                                "internal_calls": [],
+                                                                "messages": [],
+                                                                "result": [
+                                                                    "0x21d23d7d5",
+                                                                    "0x0"
+                                                                ],
+                                                                "selector": "0x2e4263afad30923c891518314c3c95dbe830a16874e8abc5777a9a20b54c76e"
+                                                            }
+                                                        ],
+                                                        "messages": [],
+                                                        "result": [
+                                                            "0x21d23d7d5",
+                                                            "0x0"
+                                                        ],
+                                                        "selector": "0x2e4263afad30923c891518314c3c95dbe830a16874e8abc5777a9a20b54c76e"
+                                                    }
+                                                ],
+                                                "messages": [],
+                                                "result": [],
+                                                "selector": "0x15543c3708653cda9d418b4ccd3be11368e40636c10c44b18cfe756b6d88b29"
+                                            }
+                                        ],
+                                        "messages": [],
+                                        "result": [],
+                                        "selector": "0x15543c3708653cda9d418b4ccd3be11368e40636c10c44b18cfe756b6d88b29"
+                                    }
+                                ],
+                                "messages": [],
+                                "result": [
+                                    "0x3",
+                                    "0x2035b3a197ff7",
+                                    "0x0",
+                                    "0xd55c1",
+                                    "0x0",
+                                    "0xc225226c4f46a6c",
+                                    "0x0"
+                                ],
+                                "selector": "0x3276861cf5e05d6daf8f352cabb47df623eb10c383ab742fcc7abea94d5c5cc"
+                            }
+                        ],
+                        "messages": [],
+                        "result": [
+                            "0x3",
+                            "0x2035b3a197ff7",
+                            "0x0",
+                            "0xd55c1",
+                            "0x0",
+                            "0xc225226c4f46a6c",
+                            "0x0"
+                        ],
+                        "selector": "0x3276861cf5e05d6daf8f352cabb47df623eb10c383ab742fcc7abea94d5c5cc"
+                    }
+                ],
+                "messages": [],
+                "result": [
+                    "0x1",
+                    "0x3",
+                    "0x2035b3a197ff7",
+                    "0x0",
+                    "0xd55c1",
+                    "0x0",
+                    "0xc225226c4f46a6c",
+                    "0x0"
+                ],
+                "selector": "0x15d40a3d6ca2ac30f4031e42be28da9b056fef9bb7357ac5e85627ee876e5ad"
+            }
+        ],
+        "messages": [],
+        "result": [
+            "0x1",
+            "0x3",
+            "0x2035b3a197ff7",
+            "0x0",
+            "0xd55c1",
+            "0x0",
+            "0xc225226c4f46a6c",
+            "0x0"
+        ],
+        "selector": "0x15d40a3d6ca2ac30f4031e42be28da9b056fef9bb7357ac5e85627ee876e5ad"
+    },
+    "signature": [
+        "0x4d2bdc02b0df7b2a8b2c82de5f4fb1668950e2aa44f1a0f76989a307aadf269",
+        "0x55abbf9ad16f6f8d9f18aefc83a00bbdd67facc5bf9e0dd9863616330000004"
+    ],
+    "validate_invocation": {
+        "call_type": "CALL",
+        "calldata": [
+            "0x2",
+            "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+            "0x219209e083275171774dab1df80982e9df2096516f06319c5c6d71ae0a8480c",
+            "0x0",
+            "0x3",
+            "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+            "0x3276861cf5e05d6daf8f352cabb47df623eb10c383ab742fcc7abea94d5c5cc",
+            "0x3",
+            "0xa",
+            "0xd",
+            "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+            "0x2035b3a197ff7",
+            "0x0",
+            "0x2035b3a197ff7",
+            "0x0",
+            "0xc14df29e5e96a75",
+            "0x0",
+            "0x3",
+            "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+            "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
+            "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
+            "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+            "0x63d1890b"
+        ],
+        "caller_address": "0x0",
+        "class_hash": "0x25ec026985a3bf9d0cc1fe17326b245dfdc3ff89b8fde106542a3ea56c5a918",
+        "contract_address": "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+        "entry_point_type": "EXTERNAL",
+        "events": [],
+        "execution_resources": {
+            "builtin_instance_counter": {
+                "ecdsa_builtin": 1,
+                "range_check_builtin": 3
+            },
+            "n_memory_holes": 0,
+            "n_steps": 273
+        },
+        "internal_calls": [
+            {
+                "call_type": "DELEGATE",
+                "calldata": [
+                    "0x2",
+                    "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+                    "0x219209e083275171774dab1df80982e9df2096516f06319c5c6d71ae0a8480c",
+                    "0x0",
+                    "0x3",
+                    "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                    "0x3276861cf5e05d6daf8f352cabb47df623eb10c383ab742fcc7abea94d5c5cc",
+                    "0x3",
+                    "0xa",
+                    "0xd",
+                    "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+                    "0x2035b3a197ff7",
+                    "0x0",
+                    "0x2035b3a197ff7",
+                    "0x0",
+                    "0xc14df29e5e96a75",
+                    "0x0",
+                    "0x3",
+                    "0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+                    "0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
+                    "0xda114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
+                    "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+                    "0x63d1890b"
+                ],
+                "caller_address": "0x0",
+                "class_hash": "0x33434ad846cdd5f23eb73ff09fe6fddd568284a0fb7d1be20ee482f044dabe2",
+                "contract_address": "0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c",
+                "entry_point_type": "EXTERNAL",
+                "events": [],
+                "execution_resources": {
+                    "builtin_instance_counter": {
+                        "ecdsa_builtin": 1,
+                        "range_check_builtin": 3
+                    },
+                    "n_memory_holes": 0,
+                    "n_steps": 213
+                },
+                "internal_calls": [],
+                "messages": [],
+                "result": [],
+                "selector": "0x162da33a4585851fe8d3af3c2a9c60b557814e221e0d4f30ff0b2189d9c7775"
+            }
+        ],
+        "messages": [],
+        "result": [],
+        "selector": "0x162da33a4585851fe8d3af3c2a9c60b557814e221e0d4f30ff0b2189d9c7775"
+    }
+}
