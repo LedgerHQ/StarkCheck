@@ -1,0 +1,98 @@
+{
+	"info": {
+		"_postman_id": "b44dac7d-8210-4f31-91bd-c7bfa3ea9f6a",
+		"name": "starkCheck",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "realAccountTestnet",
+			"item": [
+				{
+					"name": "tooMuchEthSent",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"signer\": \"0x6bccce5bf55d75bfa115cb83b881e345de57343957680761adb1367d70ace83\",\n    \"transaction\": {\n        \"nonce\": \"0\",\n        \"contractAddress\": \"0x038b6f1f5e39f5965a28ff2624ab941112d54fe71b8bf1283f565f5c925566c0\",\n        \"calldata\": [\n            \"0x1\"\n            ,\"0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7\"\n            ,\"0x83afd3f4caedc6eebf44246fe54e38c95e3179a5ec9ea81740eca5b482d12e\"\n            ,\"0x0\"\n            ,\"0x3\"\n            ,\"0x3\"\n            ,\"0x5537071ea21b91a3b3743866ea12cf197f0b37a6b83be41dd0bbfec6a2cf8ef\"\n            ,\"0x38d7ea4c68000\"\n            ,\"0x0\"\n        ],\n        \"signature\": [\"0x05de0e9c122815097f71160805ecc9ada9b3694c1ecb80b55c5c171ebb44cc73\",\"2811989253174165385057350982704417670705842123914172805935131396706852847199\", \"406582147494336811964254481937960138864240053436035123315210091228244407972\"],\n        \"version\": \"1\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:6060/starkchecks/verify",
+							"host": [
+								"localhost"
+							],
+							"port": "6060",
+							"path": [
+								"starkchecks",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OkPolicy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"signer\": \"0x6bccce5bf55d75bfa115cb83b881e345de57343957680761adb1367d70ace83\",\n    \"transaction\": {\n        \"nonce\": \"0\",\n        \"contractAddress\": \"0x038b6f1f5e39f5965a28ff2624ab941112d54fe71b8bf1283f565f5c925566c0\",\n        \"calldata\": [\n            \"0x1\"\n            ,\"0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7\"\n            ,\"0x83afd3f4caedc6eebf44246fe54e38c95e3179a5ec9ea81740eca5b482d12e\"\n            ,\"0x0\"\n            ,\"0x3\"\n            ,\"0x3\"\n            ,\"0x5537071ea21b91a3b3743866ea12cf197f0b37a6b83be41dd0bbfec6a2cf8ef\"\n            ,\"0x1000\"\n            ,\"0x0\"\n        ],\n        \"signature\": [\"0x05de0e9c122815097f71160805ecc9ada9b3694c1ecb80b55c5c171ebb44cc73\",\"542674323867608295469115731054261880487220544159793511109731670720793921823\", \"429000892560001379203163213700466510010613025005817228294150261430241758557\"],\n        \"version\": \"1\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:6060/starkchecks/verify",
+							"host": [
+								"localhost"
+							],
+							"port": "6060",
+							"path": [
+								"starkchecks",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "encodePolicy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"signer\": \"0x6bccce5bf55d75bfa115cb83b881e345de57343957680761adb1367d70ace83\",\n    \"account\": \"0x05537071ea21b91a3b3743866ea12cf197f0b37a6b83be41dd0bbfec6a2cf8ee\",\n    \"policy\": [\n        {\n            \"address\": \"0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7\",\n            \"amount\": \"1000000000\"\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:6060/starkchecks/encodePolicy",
+					"host": [
+						"localhost"
+					],
+					"port": "6060",
+					"path": [
+						"starkchecks",
+						"encodePolicy"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
