@@ -1,6 +1,9 @@
-import http from 'http';
 import express, { Express } from 'express';
 import morgan from 'morgan';
+
+import dotenv from "dotenv";
+dotenv.config();
+
 import app from './routes/policy';
 
 const router: Express = express();

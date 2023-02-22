@@ -1,7 +1,5 @@
 import { ec, InvocationsDetailsWithNonce, Invocation, hash, Signature } from "starknet";
 
-require('dotenv').config()
-
 const starkCheckSignerPk = process.env.STARKCHECK_PK || "";
 const keyPair = ec.getKeyPair(starkCheckSignerPk);
 
