@@ -10,8 +10,8 @@ const safeTransferSelector= "0x19d59d013d4aa1a8b1ce4c8299086f070733b453c02d0dc46
 
 const SET_POLICY_EVENT_SELECTOR = "0xa79c31a86c9b0b2abf73ad994711fbad4da038921b96087ff074964aecc528";
 
-const network: any = process.env.NETWORK;
-const nodeUrl: any = process.env.NODE_RPC_URL;
+const network: any = process.env.NETWORK!;
+const nodeUrl: string = process.env.NODE_RPC_URL!;
 const provider = new SequencerProvider({ network });
 const rpcProvider = new RpcProvider({ nodeUrl });
 
@@ -69,8 +69,8 @@ const encodePolicy = (policy: Policy): {base64: string, feltEncoded: Array<strin
       trace.selector == transferFromSelector ||
       trace.selector == safeTransferSelector
     ) ? 
-    [trace].concat(trace.internal_calls.length ? trace.internal_calls.flatMap( (it: any) => extractEvents(it)) : [])
-  : trace.internal_calls.length ? trace.internal_calls.flatMap( (it: any) => extractEvents(it)) : []
+    [trace].concat(trace.internal_calls.length ? trace.internal_calls.flatMap( (it: FunctionInvocation) => extractEvents(it)) : [])
+  : trace.internal_calls.length ? trace.internal_calls.flatMap( (it: FunctionInvocation) => extractEvents(it)) : []
 }
 
 /**
@@ -171,7 +171,7 @@ const verifyPolicyWithTrace = (account: string, policies: Policy[], trace: Trans
   const accountSatinized: string = account.replace("0x0", "0x");
   const events: Array<FunctionInvocation> = trace.function_invocation ? extractEvents(trace.function_invocation): [];
   // Loop through all events with transfer/approve/etc selectors
-  return events.filter( (event: any) => 
+  return events.filter( (event: FunctionInvocation) => 
     // for each event, loop through each policy to check if it respects it
     policySanitized.reduce( (flag, policy) => flag 
       || (

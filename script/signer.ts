@@ -1,4 +1,4 @@
-import { ec, InvocationsDetailsWithNonce, Invocation, hash, number } from "starknet";
+import { ec, InvocationsDetailsWithNonce, Invocation, hash, number, constants } from "starknet";
 
 const starkCheckSignerPk = 1673888886562;
 const keyPair = ec.getKeyPair(starkCheckSignerPk);
@@ -14,7 +14,7 @@ const keyPair = ec.getKeyPair(starkCheckSignerPk);
  * @returns Signature [ r, s ]
  */
 function signTransactionHash(tx: Invocation & InvocationsDetailsWithNonce) {
-  const chainId: any = "0x534e5f474f45524c49";
+  const chainId: constants.StarknetChainId = constants.StarknetChainId.TESTNET;
   const txHash = hash.calculateTransactionHash(
     tx.contractAddress,
     tx.version,
