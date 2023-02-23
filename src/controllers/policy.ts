@@ -1,13 +1,13 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import { InvocationsDetailsWithNonce, Invocation } from "starknet";
 
 import policyService from '../services/policy';
 import { Policy } from '../types/policy';
 
-const verifyPolicy = async (req: Request, res: Response, next: NextFunction) => {
+const verifyPolicy = async (req: Request, res: Response) => {
     // get the data from req.body
-    let signer: string = req.body.signer;
-    let transaction: Invocation & InvocationsDetailsWithNonce = req.body.transaction;
+    const signer: string = req.body.signer;
+    const transaction: Invocation & InvocationsDetailsWithNonce = req.body.transaction;
     try {
         const signature = await policyService.verifyPolicy(signer, transaction);
         return res.status(200).json({
@@ -24,9 +24,9 @@ const verifyPolicy = async (req: Request, res: Response, next: NextFunction) => 
 
 };
 
-const encodePolicy = async (req: Request, res: Response, next: NextFunction) => {
+const encodePolicy = async (req: Request, res: Response) => {
     // get the data from req.body
-    let policy: Policy = req.body.policy;
+    const policy: Policy = req.body.policy;
     try {
         const policyEncoded = await policyService.encodePolicy(policy);
         return res.status(200).json({

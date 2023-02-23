@@ -33,7 +33,7 @@ router.use((req, res, next) => {
 router.use('/', app);
 
 /** Error handling */
-router.use((req, res, next) => {
+router.use((_, res) => {
     const error = new Error('not found');
     return res.status(404).json({
         message: error.message
@@ -41,7 +41,7 @@ router.use((req, res, next) => {
 });
 
 /** Server */
-const PORT: any = process.env.PORT ?? 6060;
+const PORT = process.env.PORT ?? "6060";
 router.listen(PORT, () => {
     console.log(`The server is running on port ${PORT}`)
 });
