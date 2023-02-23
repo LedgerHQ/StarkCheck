@@ -52,7 +52,7 @@ The event looks like this
 
 ## Requirements
 
-- Node >16.X
+- Node >18.X
 
 ## Install
 
