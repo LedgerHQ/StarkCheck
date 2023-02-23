@@ -54,13 +54,25 @@ The event looks like this
 
 - Node >16.X
 
-## install
+## Install
 
-    npm i
+First install the dependencies
 
-## tests
+```shell
+    pnpm install
+```
 
-    npm test
+Then install the pre-push hook using lefthook
+
+```shell
+    npx lefthook install pre-push
+```
+
+## Tests
+
+```shell
+    pnpm test
+```
 
 Tests are run against real trace transactions made onchain. On note.md you can see on starkscan the transaction.
 To extract its trace run
