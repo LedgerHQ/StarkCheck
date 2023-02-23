@@ -1,4 +1,4 @@
-import { ec, InvocationsDetailsWithNonce, Invocation, hash, Signature } from "starknet";
+import { constants, ec, InvocationsDetailsWithNonce, Invocation, hash, Signature } from "starknet";
 
 const starkCheckSignerPk = process.env.STARKCHECK_PK || "";
 const keyPair = ec.getKeyPair(starkCheckSignerPk);
@@ -9,7 +9,7 @@ const keyPair = ec.getKeyPair(starkCheckSignerPk);
  * @returns Signature [ r, s ]
  */
 function signTransactionHash(tx: Invocation & InvocationsDetailsWithNonce): Signature {
-  const chainId: any = process.env.NETWORK;
+  const chainId = process.env.NETWORK as constants.StarknetChainId;
   const txHash = hash.calculateTransactionHash(
     tx.contractAddress,
     tx.version,
@@ -17,7 +17,7 @@ function signTransactionHash(tx: Invocation & InvocationsDetailsWithNonce): Sign
     tx.maxFee,
     chainId,
     tx.nonce
-   );
+  );
   return ec.sign(keyPair, txHash);
 }
 
