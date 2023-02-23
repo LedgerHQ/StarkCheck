@@ -1,17 +1,16 @@
 interface Policy {
-    address: string;
-    amount?: string;
-    ids?: string[];
+  address: string;
+  amount?: string;
+  ids?: string[];
 }
- 
 
 interface Transaction {
-    contractAddress: string;
-    calldata: Array<string>;
-    signature: string;
-    nonce: string;
-    maxFee: string;
-    version: string;
+  contractAddress: string;
+  calldata: Array<string>;
+  signature: string;
+  nonce: string;
+  maxFee: string;
+  version: string;
 }
 
-export { Policy, Transaction }
+export { Policy, Transaction };
