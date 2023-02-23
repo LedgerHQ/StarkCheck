@@ -1,9 +1,9 @@
 {
-    "account": "0x6b4dc093cb190eaeaccb395562702a04ce31b08360199cb38487632e4540b51",
-    "policy": [
-        {
-            "address": "0x727a63f78ee3f1bd18f78009067411ab369c31dece1ae22e16f567906409905",
-            "ids": ["7"]
-        }
-    ]
+  "account": "0x6b4dc093cb190eaeaccb395562702a04ce31b08360199cb38487632e4540b51",
+  "policy": [
+    {
+      "address": "0x727a63f78ee3f1bd18f78009067411ab369c31dece1ae22e16f567906409905",
+      "ids": ["7"]
+    }
+  ]
 }

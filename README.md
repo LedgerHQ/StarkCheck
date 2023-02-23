@@ -1,8 +1,7 @@
 # Starkcheck
 
-StarkCheck is a module to Ledger Fresh that simulates transaction sent by an user and ensure they respect a defined policy. 
-The goal is to protect the user assets by using a second signature made by StarkCheck to prevent malwares when using a less secured signer. 
-
+StarkCheck is a module to Ledger Fresh that simulates transaction sent by an user and ensure they respect a defined policy.
+The goal is to protect the user assets by using a second signature made by StarkCheck to prevent malwares when using a less secured signer.
 
 ## How it works
 
@@ -12,11 +11,12 @@ A policy is link to a signer of the acccount, so an user can define a policy bas
 ## API
 
 This API expose a route to submit a sign transaction with the signer pub_key. Under the hood the following steps are done.
- - Fetch the policy on chain using the events.
- - Simulate the transaction to get its trace
- - On the trace get all events that are related to approve and transfer
- - check that the policy is respected
- - Sign the transactionHash is the policy is respected. Else returns the number of events that does not respect the policy
+
+- Fetch the policy on chain using the events.
+- Simulate the transaction to get its trace
+- On the trace get all events that are related to approve and transfer
+- check that the policy is respected
+- Sign the transactionHash is the policy is respected. Else returns the number of events that does not respect the policy
 
 it also exposes routes to encode/decode a Policy
 
@@ -24,7 +24,8 @@ it also exposes routes to encode/decode a Policy
 
 ### Policy type and expression
 
-The policy is express as an Array of 
+The policy is express as an Array of
+
 ```
 interface Policy {
     address: string;
@@ -51,17 +52,17 @@ The event looks like this
 
 ## Requirements
 
- - Node >16.X 
+- Node >16.X
 
 ## install
 
-    npm i 
+    npm i
 
 ## tests
 
     npm test
 
 Tests are run against real trace transactions made onchain. On note.md you can see on starkscan the transaction.
-To extract its trace run 
+To extract its trace run
 
     starknet get_transaction_trace --hash <txHash> --network alpha-mainnet > trace.json
