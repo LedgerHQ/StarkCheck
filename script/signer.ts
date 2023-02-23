@@ -44,4 +44,5 @@ signTransactionHash({
       ,"0x1000"
       ,"0x0"
   ],
+    // "maxFee": "11292252158384"
 })

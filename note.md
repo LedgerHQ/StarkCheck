@@ -17,8 +17,6 @@ trace alpharoad swap: https://starkscan.co/tx/0x5e1cb5610d130f0da72128e746a493cb
 trace jediswap swap : https://starkscan.co/tx/0x15a14764c7386a9148ea29872cfb8c33c980449cf6fe0804f0f14811b7cec6b
 
 
-declare enum StarknetChainId {
-    MAINNET = "0x534e5f4d41494e",
-    TESTNET = "0x534e5f474f45524c49",
-    TESTNET2 = "0x534e5f474f45524c4932"
-}
+mainnet-alpha = "0x534e5f4d41494e", 
+goerli-alpha = "0x534e5f474f45524c49",
+goerli-alpha-2 = "0x534e5f474f45524c4932"
