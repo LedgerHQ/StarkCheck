@@ -1,0 +1,18 @@
+# dependencies
+node_modules
+
+# build output
+dist
+build
+
+# configuration files
+*.yaml
+.*
+
+# dependency files
+package.json
+pnpm-lock.yaml
+
+# test
+coverage
+report.json
