@@ -1,6 +1,18 @@
 import policyService from '../src/services/policy';
 import { readFileSync } from 'fs';
 
+// mock relevant object in starknetjs
+jest.mock('starknet', () => ({
+    // transform the module to es6 module, to avoid the read-only allocation error
+    __esModule: true,
+    // import the actual module to make sure we don't mock the actual implementation of starknetjs
+    ...jest.requireActual('starknet'),
+    // mock the RpcProvider class using a minimalist implementation
+    // this mock is required because the provider fire the fetchEndpoint method on instantiation
+    // that request the RPC endpoint
+    RpcProvider: jest.fn().mockResolvedValue({ getEvents: jest.fn() })
+}));
+
 describe('policy service', () => {
     describe('ERC20', () => {
         test('ERC20 policy pass', async () => {
@@ -91,7 +103,7 @@ describe('policy service', () => {
                 policy.account = "0x64225cd4ea2ab991a5539106336037d048e8d37c6d9b9cc49001df6a995d527";
                 const res = await policyService.verifyPolicyWithTrace(policy.account, policy.policy, trace);
                 expect(res.length).toBe(0);
-            });        
+            });
         });
     });
-  });
+});
