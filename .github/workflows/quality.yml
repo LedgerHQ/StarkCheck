@@ -1,0 +1,100 @@
+name: Quality checks ✅
+
+on:  
+  push:
+    branches:
+      - main
+      - prod
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  eslint:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          # automatically cache dependencies using pnpm
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
+      - name: Run eslint
+        run: pnpm run lint
+
+  prettier:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          # automatically cache dependencies using pnpm
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
+      - name: Run prettier
+        run: pnpm run prettier
+
+  build:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16, 18]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          # automatically cache dependencies using pnpm
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
+      - name: Run build
+        run: pnpm run build
+
+  test:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          # automatically cache dependencies using pnpm
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run unit tests
+        run: pnpm run test:ci
