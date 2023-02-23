@@ -1,7 +1,11 @@
 # Starkcheck
 
+![Quality checks](https://github.com/ledgerhq/StarkCheck/actions/workflows/quality.yml/badge.svg?branch=main)
+
 StarkCheck is a module to Ledger Fresh that simulates transaction sent by an user and ensure they respect a defined policy.
 The goal is to protect the user assets by using a second signature made by StarkCheck to prevent malwares when using a less secured signer.
+
+Wanna chat with us? Join our [Telegram group](https://t.me/+_cZcU5wZvyhmM2U0)
 
 ## How it works
 
