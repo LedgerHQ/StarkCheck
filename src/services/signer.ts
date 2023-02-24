@@ -16,9 +16,10 @@ const keyPair = ec.getKeyPair(starkCheckSignerPk);
  * @returns Signature [ r, s ]
  */
 function signTransactionHash(
-  tx: Invocation & InvocationsDetailsWithNonce
+  tx: Invocation & InvocationsDetailsWithNonce,
+  chainId: constants.StarknetChainId
 ): Signature {
-  const chainId = process.env.NETWORK as constants.StarknetChainId;
+  console.log(chainId);
   const txHash = hash.calculateTransactionHash(
     tx.contractAddress,
     tx.version,
