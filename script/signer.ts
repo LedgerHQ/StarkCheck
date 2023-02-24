@@ -1,4 +1,4 @@
-import starknet from 'starknet';
+import * as starknet from 'starknet';
 
 const starkCheckSignerPk = 1673888886562;
 const keyPair = starknet.ec.getKeyPair(starkCheckSignerPk);
