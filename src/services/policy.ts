@@ -30,9 +30,9 @@ const SET_POLICY_EVENT_SELECTOR =
   '0xa79c31a86c9b0b2abf73ad994711fbad4da038921b96087ff074964aecc528';
 
 const network = process.env.NETWORK as constants.StarknetChainId;
-const nodeUrl = process.env.NODE_RPC_URL;
+const nodeUrl = process.env.NODE_RPC_URL!;
 const provider = new SequencerProvider({ network });
-const rpcPovider = new RpcProvider({ nodeUrl });
+const rpcProvider = new RpcProvider({ nodeUrl });
 
 /**
  *
@@ -57,7 +57,10 @@ const verifyPolicy = async (
     trace
   );
   if (res.length == 0) {
-    const signedTransaction = signTransactionHash(transaction);
+    const signedTransaction = signTransactionHash(
+      transaction,
+      provider.chainId
+    );
     return signedTransaction;
   } else {
     throw `${res.length} event(s) found that does not respect the policy`;
@@ -149,7 +152,7 @@ const fetchEvents = async (account: string): Promise<RPC.GetEventsResponse> => {
       keys: [SET_POLICY_EVENT_SELECTOR],
       chunk_size: 20,
     };
-    return await rpcPovider.getEvents(eventFilter);
+    return await rpcProvider.getEvents(eventFilter);
   } catch (error) {
     throw "can't connect to RPC provider";
   }
