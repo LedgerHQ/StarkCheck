@@ -19,7 +19,6 @@ function signTransactionHash(
   tx: Invocation & InvocationsDetailsWithNonce,
   chainId: constants.StarknetChainId
 ): Signature {
-  console.log(chainId);
   const txHash = hash.calculateTransactionHash(
     tx.contractAddress,
     tx.version,
