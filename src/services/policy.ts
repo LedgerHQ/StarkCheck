@@ -87,6 +87,44 @@ const encodePolicy = (
   };
 };
 
+const getPolicies = async (
+  address: string
+): Promise<{ signer: string; policy: Policy }[]> => {
+  const events = await fetchEvents(address);
+
+  // note: can't use for in because of conflincting types on starknet.js
+  const eventsLength = events.events.length;
+  if (!eventsLength) throw 'Contract does not have any policies set onchain';
+
+  const policies: Array<{ signer: string; policy: Policy }> = [];
+  const signers: Array<string> = [];
+
+  for (let i = eventsLength - 1; i >= 0; i--) {
+    if (!signers.includes(events.events[i].data[0])) {
+      // excludes first 2 params not related to the policy which are the signer pub key and the len of the policy
+      const data = events.events[i].data?.slice(2);
+      const policyString = data
+        .map((d) => shortString.decodeShortString(d))
+        .join()
+        .split(',')
+        .join('');
+
+      const json = JSON.parse(
+        Buffer.from(policyString, 'base64').toString('utf8')
+      );
+      policies.push({
+        signer: events.events[i].data[0],
+        policy: json,
+      });
+      signers.push(events.events[i].data[0]);
+    }
+  }
+  if (!policies.length)
+    throw 'Contract does not have a policy set onchain for this signer';
+
+  return policies;
+};
+
 /**
  * recursively returns an array of events, if the current internal has an events field populated
  * this events has to match the selector we are watching
@@ -272,4 +310,9 @@ const findNFTIds = (policy: Policy, event: FunctionInvocation): boolean => {
     );
 };
 
-export default { verifyPolicy, verifyPolicyWithTrace, encodePolicy };
+export default {
+  verifyPolicy,
+  verifyPolicyWithTrace,
+  encodePolicy,
+  getPolicies,
+};
