@@ -11,7 +11,7 @@ const keyPair = starknet.ec.getKeyPair(starkCheckSignerPk);
 function signTransactionHash(
   tx: starknet.Invocation & starknet.InvocationsDetailsWithNonce
 ) {
-  const chainId = starknet.constants.StarknetChainId.MAINNET;
+  const chainId = starknet.constants.StarknetChainId.TESTNET;
   const txHash = starknet.hash.calculateTransactionHash(
     tx.contractAddress,
     tx.version,
@@ -42,4 +42,6 @@ signTransactionHash({
     '0x1000',
     '0x0',
   ],
+  // maxFee: "11292252158384"
+  maxFee: '0xa452eadb9b0',
 });
