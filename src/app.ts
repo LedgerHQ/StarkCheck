@@ -31,6 +31,9 @@ app.use((req, res, next) => {
 /** Routes */
 app.use('/', router);
 
+// Check server health status
+app.get('/ping', (_, res) => res.json({ message: 'Server is up and running' }));
+
 /** Error handling */
 app.use((_, res) => {
   const error = new Error('not found');
