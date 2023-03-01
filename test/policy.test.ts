@@ -14,6 +14,9 @@ const traceTooMuch = JSON.parse(
 );
 const events = JSON.parse(readFileSync('test/getPolicies/events.json', 'utf8'));
 
+// increase timeout to prevent failure on github action
+jest.setTimeout(20000);
+
 // mock relevant object in starknetjs
 jest.mock('starknet', () => ({
   // transform the module to es6 module, to avoid the read-only allocation error
