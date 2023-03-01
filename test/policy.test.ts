@@ -25,6 +25,9 @@ jest.mock('starknet', () => ({
   // that request the RPC endpoint
   RpcProvider: jest.fn().mockReturnValue({
     getEvents: jest.fn((_) => events),
+  }),
+  SequencerProvider: jest.fn().mockReturnValue({
+    chainId: '0x534e5f474f45524c49',
     getSimulateTransaction: jest
       .fn()
       .mockImplementationOnce((_) => trace)
