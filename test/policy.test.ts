@@ -1,5 +1,18 @@
 import policyService from '../src/services/policy';
 import { readFileSync } from 'fs';
+import app from '../src/app';
+import supertest from 'supertest';
+
+const trace = JSON.parse(
+  readFileSync('test/getSimulateTransaction/transferEth.json', 'utf8')
+);
+const traceTooMuch = JSON.parse(
+  readFileSync(
+    'test/getSimulateTransaction/transferEthTooMuchSpent.json',
+    'utf8'
+  )
+);
+const events = JSON.parse(readFileSync('test/getPolicies/events.json', 'utf8'));
 
 // mock relevant object in starknetjs
 jest.mock('starknet', () => ({
@@ -10,10 +23,16 @@ jest.mock('starknet', () => ({
   // mock the RpcProvider class using a minimalist implementation
   // this mock is required because the provider fire the fetchEndpoint method on instantiation
   // that request the RPC endpoint
-  RpcProvider: jest.fn().mockResolvedValue({ getEvents: jest.fn() }),
+  RpcProvider: jest.fn().mockReturnValue({
+    getEvents: jest.fn((_) => events),
+    getSimulateTransaction: jest
+      .fn()
+      .mockImplementationOnce((_) => trace)
+      .mockImplementationOnce((_) => traceTooMuch),
+  }),
 }));
 
-describe('policy service', () => {
+describe('policy detection tests', () => {
   describe('ERC20', () => {
     test('ERC20 policy pass', async () => {
       const trace = JSON.parse(readFileSync('test/txTrace1.json', 'utf8'));
@@ -182,5 +201,96 @@ describe('policy service', () => {
         expect(res.length).toBe(0);
       });
     });
+  });
+});
+
+describe('policy API tests', () => {
+  let request: supertest.SuperTest<supertest.Test>;
+
+  beforeAll(() => {
+    request = supertest(app);
+  });
+
+  test('OK', async () => {
+    const params = {
+      signer:
+        '0x6bccce5bf55d75bfa115cb83b881e345de57343957680761adb1367d70ace83',
+      transaction: {
+        nonce: '0',
+        contractAddress:
+          '0x038b6f1f5e39f5965a28ff2624ab941112d54fe71b8bf1283f565f5c925566c0',
+        calldata: [
+          '0x1',
+          '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7',
+          '0x83afd3f4caedc6eebf44246fe54e38c95e3179a5ec9ea81740eca5b482d12e',
+          '0x0',
+          '0x3',
+          '0x3',
+          '0x5537071ea21b91a3b3743866ea12cf197f0b37a6b83be41dd0bbfec6a2cf8ef',
+          '0x1000',
+          '0x0',
+        ],
+        signature: [
+          '0x05de0e9c122815097f71160805ecc9ada9b3694c1ecb80b55c5c171ebb44cc73',
+          '1365647468420381883774098781551149124302310791256113135105364144492070570671',
+          '2880894951324392555368269251218181147005460850072884989728825877787588076066',
+        ],
+        version: '1',
+        maxFee: '11292252158384',
+      },
+    };
+    const response = await request
+      .post('/starkchecks/verify')
+      .send(params)
+      .set('Accept', 'application/json');
+
+    expect(response.headers['content-type']).toMatch(/json/);
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual({
+      signature: [
+        '2574783916812235641217606860108264420836035622606275116211565106945357098436',
+        '619937207968326657681386252878381755810713851287768744122286509072016201999',
+      ],
+    });
+  });
+
+  test('Policy not respected', async () => {
+    const params = {
+      signer:
+        '0x6bccce5bf55d75bfa115cb83b881e345de57343957680761adb1367d70ace83',
+      transaction: {
+        nonce: '0',
+        contractAddress:
+          '0x038b6f1f5e39f5965a28ff2624ab941112d54fe71b8bf1283f565f5c925566c0',
+        calldata: [
+          '0x1',
+          '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7',
+          '0x83afd3f4caedc6eebf44246fe54e38c95e3179a5ec9ea81740eca5b482d12e',
+          '0x0',
+          '0x3',
+          '0x3',
+          '0x5537071ea21b91a3b3743866ea12cf197f0b37a6b83be41dd0bbfec6a2cf8ef',
+          '0x38d7ea4c68000',
+          '0x0',
+        ],
+        signature: [
+          '0x05de0e9c122815097f71160805ecc9ada9b3694c1ecb80b55c5c171ebb44cc73',
+          '1577752799871498268109729476040605377222532826203412949027912072108808209957',
+          '3351820308540296392371264187894666898033840131738263783210120114437364986098',
+        ],
+        version: '1',
+        maxFee: '11292252158384',
+      },
+    };
+    const response = await request
+      .post('/starkchecks/verify')
+      .send(params)
+      .set('Accept', 'application/json');
+
+    expect(response.headers['content-type']).toMatch(/json/);
+    expect(response.status).toEqual(400);
+    expect(response.body.message).toEqual(
+      '1 event(s) found that does not respect the policy'
+    );
   });
 });
