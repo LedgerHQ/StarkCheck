@@ -5,6 +5,12 @@ import { readFileSync } from 'fs';
 import { RpcProviderOptions, RPC } from 'starknet';
 
 const events = JSON.parse(readFileSync('test/getPolicies/events.json', 'utf8'));
+const policyToEncode = JSON.parse(
+  readFileSync('test/encodePolicy/policyToEncode.json', 'utf8')
+);
+const policyEncoded = JSON.parse(
+  readFileSync('test/encodePolicy/policyEncoded.json', 'utf8')
+);
 const policyFormatted = JSON.parse(
   readFileSync('test/getPolicies/policyFormatted.json', 'utf8')
 );
@@ -98,6 +104,61 @@ describe('server', () => {
       expect(response.body.message).toEqual(
         'Contract does not have any policies set onchain'
       );
+    });
+  });
+
+  describe('/encodePolicy', () => {
+    test('OK', async () => {
+      const response = await request
+        .post('/starkchecks/encodePolicy')
+        .send(policyToEncode)
+        .set('Accept', 'application/json');
+
+      expect(response.headers['content-type']).toMatch(/json/);
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual(policyEncoded);
+    });
+    test('Policy missing', async () => {
+      const policyBadlyFormed = { ...policyToEncode };
+      policyBadlyFormed.policy = undefined;
+      const response = await request
+        .post('/starkchecks/encodePolicy')
+        .send(policyBadlyFormed)
+        .set('Accept', 'application/json');
+
+      expect(response.headers['content-type']).toMatch(/json/);
+      expect(response.status).toEqual(400);
+      expect(response.body.message).toEqual('policy is missing');
+    });
+    test('Policy not array', async () => {
+      const policyBadlyFormed = { ...policyToEncode };
+      policyBadlyFormed.policy = '2';
+      const response = await request
+        .post('/starkchecks/encodePolicy')
+        .send(policyBadlyFormed)
+        .set('Accept', 'application/json');
+
+      expect(response.headers['content-type']).toMatch(/json/);
+      expect(response.status).toEqual(400);
+      expect(response.body.message).toEqual('policy is not an array');
+    });
+    test('Policy not malformed', async () => {
+      const policyBadlyFormed = { ...policyToEncode };
+      policyBadlyFormed.policy = [
+        {
+          adresse:
+            '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7',
+          amount: '1000000000',
+        },
+      ];
+      const response = await request
+        .post('/starkchecks/encodePolicy')
+        .send(policyBadlyFormed)
+        .set('Accept', 'application/json');
+
+      expect(response.headers['content-type']).toMatch(/json/);
+      expect(response.status).toEqual(400);
+      expect(response.body.message).toEqual('policy malformed');
     });
   });
 });
