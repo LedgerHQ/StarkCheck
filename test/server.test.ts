@@ -34,12 +34,10 @@ jest.mock('starknet', () => ({
         super(args);
       }
 
-      async getEvents(
-        eventsFilter: RPC.EventFilter
-      ): Promise<RPC.GetEventsResponse> {
+      async getEvents(): Promise<RPC.GetEventsResponse> {
         // everytime the getEvents method is called, call the mockedGetEvents function
         // and return the value returned by the mocked function
-        return mockedGetEvents(eventsFilter);
+        return mockedGetEvents();
       }
 
       // intercept all the requests made by the initial implementation and return a dumb value

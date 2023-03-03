@@ -2,6 +2,7 @@ import policyService from '../src/services/policy';
 import { readFileSync } from 'fs';
 import app from '../src/app';
 import supertest from 'supertest';
+import { RpcProviderOptions, RPC, SequencerProviderOptions } from 'starknet';
 
 const txNotRespected = JSON.parse(
   readFileSync('test/getSimulateTransaction/txNotRespected.json', 'utf8')
@@ -24,24 +25,59 @@ const events = JSON.parse(readFileSync('test/getPolicies/events.json', 'utf8'));
 // increase timeout to prevent failure on github action
 jest.setTimeout(20000);
 
+// create a mock function that will replace the real implementation of
+// (new RpcProvider(...)).getEvents. keeping the reference of the mocked
+// function allow us to update the return value of the mocked function
+// for each test case
+const mockedGetEvents = jest.fn();
+const mockedGetTrace = jest.fn();
+
 // mock relevant object in starknetjs
 jest.mock('starknet', () => ({
   // transform the module to es6 module, to avoid the read-only allocation error
   __esModule: true,
   // import the actual module to make sure we don't mock the actual implementation of starknetjs
   ...jest.requireActual('starknet'),
-  // mock the RpcProvider class using a minimalist implementation
-  // this mock is required because the provider fire the fetchEndpoint method on instantiation
-  // that request the RPC endpoint
-  RpcProvider: jest.fn().mockReturnValue({
-    getEvents: jest.fn((_) => events),
+  // mock the RpcProvider class using a minimalist class that mock the important methods
+  RpcProvider: jest.fn().mockImplementation(() => {
+    class MockedRpcProvider extends jest.requireActual('starknet').RpcProvider {
+      constructor(args: RpcProviderOptions) {
+        super(args);
+      }
+
+      async getEvents(): Promise<RPC.GetEventsResponse> {
+        // everytime the getEvents method is called, call the mockedGetEvents function
+        // and return the value returned by the mocked function
+        return mockedGetEvents();
+      }
+
+      // intercept all the requests made by the initial implementation and return a dumb value
+      async fetchEndpoint() {
+        // TODO: write a switch for all the possible endpoint and return coherent values
+        return new Promise((resolve) => resolve(true));
+      }
+    }
+
+    // return a new instance of the mocked class instead of the actual implementation
+    return new MockedRpcProvider({
+      nodeUrl: 'https://starknet-fakenetwork.infura.io/v3/fake-key',
+    });
   }),
-  SequencerProvider: jest.fn().mockReturnValue({
-    chainId: '0x534e5f474f45524c49',
-    getSimulateTransaction: jest
-      .fn()
-      .mockImplementationOnce((_) => trace)
-      .mockImplementationOnce((_) => traceTooMuch),
+  SequencerProvider: jest.fn().mockImplementation(() => {
+    class MockedSequencerProvider extends jest.requireActual('starknet')
+      .SequencerProvider {
+      constructor(args: SequencerProviderOptions) {
+        super(args);
+      }
+
+      async getSimulateTransaction(): Promise<RPC.GetEventsResponse> {
+        return mockedGetTrace();
+      }
+    }
+
+    return new MockedSequencerProvider({
+      network: 'goerli-alpha',
+    });
   }),
 }));
 
@@ -222,9 +258,11 @@ describe('policy API tests', () => {
 
   beforeAll(() => {
     request = supertest(app);
+    mockedGetEvents.mockReturnValue(events);
   });
 
   test('OK', async () => {
+    mockedGetTrace.mockReturnValue(trace);
     const response = await request
       .post('/starkchecks/verify')
       .send(txRespected)
@@ -241,6 +279,7 @@ describe('policy API tests', () => {
   });
 
   test('Policy not respected', async () => {
+    mockedGetTrace.mockReturnValue(traceTooMuch);
     const response = await request
       .post('/starkchecks/verify')
       .send(txNotRespected)
@@ -250,6 +289,23 @@ describe('policy API tests', () => {
     expect(response.status).toEqual(400);
     expect(response.body.message).toEqual(
       '1 event(s) found that does not respect the policy'
+    );
+  });
+
+  test('Event has no policy for signer', async () => {
+    const tx = { ...txRespected };
+    tx.signer =
+      '0x6bccce5bf55d75bfa115cb83b881e345de57343957680761adb1367d70ace82';
+    mockedGetTrace.mockReturnValue(trace);
+    const response = await request
+      .post('/starkchecks/verify')
+      .send(tx)
+      .set('Accept', 'application/json');
+
+    expect(response.headers['content-type']).toMatch(/json/);
+    expect(response.status).toEqual(400);
+    expect(response.body.message).toEqual(
+      'Contract does not have a policy set onchain for this signer'
     );
   });
 });
