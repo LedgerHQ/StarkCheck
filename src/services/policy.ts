@@ -119,9 +119,6 @@ const getPolicies = async (
       signers.push(events.events[i].data[0]);
     }
   }
-  if (!policies.length)
-    throw 'Contract does not have a policy set onchain for this signer';
-
   return policies;
 };
 
