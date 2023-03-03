@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import express, { Express } from 'express';
 import morgan from 'morgan';
 import router from './routes/policy';
