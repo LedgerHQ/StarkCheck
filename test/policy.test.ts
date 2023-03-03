@@ -3,19 +3,19 @@ import { readFileSync } from 'fs';
 import app from '../src/app';
 import supertest from 'supertest';
 
-const trace = JSON.parse(
-  readFileSync('test/getSimulateTransaction/transferEth.json', 'utf8')
-);
-
 const txNotRespected = JSON.parse(
   readFileSync('test/getSimulateTransaction/txNotRespected.json', 'utf8')
 );
 const txRespected = JSON.parse(
   readFileSync('test/getSimulateTransaction/txRespected.json', 'utf8')
 );
+
+const trace = JSON.parse(
+  readFileSync('test/getSimulateTransaction/trace/transferEth.json', 'utf8')
+);
 const traceTooMuch = JSON.parse(
   readFileSync(
-    'test/getSimulateTransaction/transferEthTooMuchSpent.json',
+    'test/getSimulateTransaction/trace/transferEthTooMuchSpent.json',
     'utf8'
   )
 );
