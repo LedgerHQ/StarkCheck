@@ -87,36 +87,39 @@ const encodePolicy = (
   };
 };
 
+/**
+ * Get all policies from an account using events stored on chain
+ * @param account string.
+ * @returns an array of policies with their associated signers
+ */
 const getPolicies = async (
-  address: string
-): Promise<{ signer: string; policy: Policy }[]> => {
-  const events = await fetchEvents(address);
-
-  // note: can't use for in because of conflincting types on starknet.js
+  account: string
+): Promise<
+  {
+    signer: string;
+    policy: Policy[];
+  }[]
+> => {
+  const policies: {
+    signer: string;
+    policy: Policy[];
+  }[] = [];
+  const events = await fetchEvents(account);
   const eventsLength = events.events.length;
+  const signers: string[] = [];
   if (!eventsLength) throw 'Contract does not have any policies set onchain';
 
-  const policies: Array<{ signer: string; policy: Policy }> = [];
-  const signers: Array<string> = [];
-
+  // note: can't use for in because of conflincting types on starknet.js
   for (let i = eventsLength - 1; i >= 0; i--) {
-    if (!signers.includes(events.events[i].data[0])) {
+    const signer = events.events[i].data[0];
+    if (!signers.includes(signer)) {
       // excludes first 2 params not related to the policy which are the signer pub key and the len of the policy
-      const data = events.events[i].data?.slice(2);
-      const policyString = data
-        .map((d) => shortString.decodeShortString(d))
-        .join()
-        .split(',')
-        .join('');
-
-      const json = JSON.parse(
-        Buffer.from(policyString, 'base64').toString('utf8')
-      );
+      const policy = eventToPolicy(events.events[i].data?.slice(2));
+      signers.push(signer);
       policies.push({
-        signer: events.events[i].data[0],
-        policy: json,
+        signer,
+        policy,
       });
-      signers.push(events.events[i].data[0]);
     }
   }
   return policies;
@@ -194,6 +197,22 @@ const fetchEvents = async (account: string): Promise<RPC.GetEventsResponse> => {
 };
 
 /**
+ * transform raw events into a policy object
+ * @param data raw event
+ * @returns
+ */
+const eventToPolicy = (data: string[]): Policy[] => {
+  // transform the chuncks into one string and converts felt into hex and replace all ',' by nothing to convert into base64 later
+  const policyString = data
+    .map((d) => shortString.decodeShortString(d))
+    .join()
+    .split(',')
+    .join('');
+
+  return JSON.parse(Buffer.from(policyString, 'base64').toString('utf8'));
+};
+
+/**
  * returns the most recent event linked to a signer from the policy events
  * TODO might reconstruct a policy from all past events
  * @param account: string Contract account address of the user
@@ -207,10 +226,10 @@ const getPolicyFromEvents = async (
   let data;
 
   const events = await fetchEvents(account);
-  // note: can't use for in because of conflincting types on starknet.js
   const eventsLength = events.events.length;
   if (!eventsLength) throw 'Contract does not have any policies set onchain';
 
+  // note: can't use for in because of conflincting types on starknet.js
   for (let i = eventsLength - 1; i >= 0; i--) {
     if (events.events[i].data[0] == signer) {
       // excludes first 2 params not related to the policy which are the signer pub key and the len of the policy
@@ -221,15 +240,7 @@ const getPolicyFromEvents = async (
   if (!data)
     throw 'Contract does not have a policy set onchain for this signer';
 
-  // transform the chuncks into one string and converts felt into hex and replace all ',' by nothing to convert into base64 later
-  const policyString = data
-    .map((d) => shortString.decodeShortString(d))
-    .join()
-    .split(',')
-    .join('');
-  // convert string to base64 and parse it to JSON. TODO try catch
-
-  return JSON.parse(Buffer.from(policyString, 'base64').toString('utf8'));
+  return eventToPolicy(data);
 };
 
 /**
