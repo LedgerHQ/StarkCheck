@@ -9,5 +9,6 @@ app.post(
   policyCheckMiddleware(),
   controller.encodePolicy
 );
+app.get('/starkchecks/getPolicies/:address', controller.getPolicies);
 
 export default app;
