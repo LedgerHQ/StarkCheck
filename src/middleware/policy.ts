@@ -22,10 +22,13 @@ export const policyCheckMiddleware =
     const policyFormatOk = !req.body.policy.reduce(
       (res: boolean, pol: Policy) => {
         const keys = Object.keys(pol);
-        const ok =
+        const addressOk =
           typeof pol.address === 'string' &&
           (Array.isArray(pol.ids) || keys.includes('amount'));
-        return res || !ok;
+        const allowlistOk =
+          Array.isArray(pol.allowlist) &&
+          pol.allowlist.every((address) => typeof address === 'string');
+        return res || !(addressOk || allowlistOk);
       },
       false
     );
