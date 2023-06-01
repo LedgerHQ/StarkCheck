@@ -155,6 +155,26 @@ const extractEvents = (
 };
 
 /**
+ * recursively returns an array of contract called
+ * @param {*} trace
+ * @returns Arrray of string address
+ */
+const extractContractAddresses = (trace: FunctionInvocation): Array<string> => {
+  const contractAddresses: Array<string> = trace.contract_address
+    ? [trace.contract_address]
+    : [];
+
+  if (trace.internal_calls.length) {
+    trace.internal_calls.forEach((internalCall: FunctionInvocation) => {
+      contractAddresses.push(...extractContractAddresses(internalCall));
+    });
+  }
+
+  // Use Set to remove duplicates and return the unique addresses
+  return Array.from(new Set(contractAddresses));
+};
+
+/**
  * If calldata is sent in hex, convert it to felt.
  * @param calldata array as hex or felt
  * @returns calldata array as felt
@@ -249,9 +269,32 @@ const getPolicyFromEvents = async (
  * @returns
  */
 const sanitize0x = (policy: Policy): Policy => {
-  policy.address = policy.address.replace('0x0', '0x');
+  if (policy.address) policy.address = policy.address.replace('0x0', '0x');
+  if (policy.allowlist)
+    policy.allowlist = policy.allowlist.map((addr) =>
+      addr.replace('0x0', '0x')
+    );
+
   return policy;
 };
+
+/**
+ * Extracts the 'allowlist' field from a 'policy' object.
+ *
+ * @param {Policy[]} policy - The policy array from the JSON data.
+ *
+ * @returns {string[]} - An array of addresses from the 'allowlist' field if found,
+ * otherwise an empty array.
+ *
+ */
+function extractAllowlistAddresses(policy: Policy[]): string[] {
+  for (const item of policy) {
+    if (item.allowlist) {
+      return item.allowlist;
+    }
+  }
+  return [];
+}
 
 /**
  * Checks all events emitted by the transaction against the user policies
@@ -271,6 +314,22 @@ const verifyPolicyWithTrace = (
   const events: Array<FunctionInvocation> = trace.function_invocation
     ? extractEvents(trace.function_invocation)
     : [];
+  const extractedAddresses = trace.function_invocation
+    ? extractContractAddresses(trace.function_invocation)
+    : [];
+  const userAddresses: string[] = extractAllowlistAddresses(policySanitized);
+  // Filter extractedAddresses to only include addresses that are not in userAddressesSet
+  const userAddressesSet = new Set(userAddresses);
+  const missingAddresses = extractedAddresses.filter(
+    (address) => !userAddressesSet.has(address)
+  );
+
+  // Returns an array of addresses not present in the userAddresses array.
+  // If all addresses are present, it will return an empty array.
+  if (missingAddresses.length) {
+    console.log(missingAddresses);
+    return missingAddresses;
+  }
   // Loop through all events with transfer/approve/etc selectors
   return events.filter((event: FunctionInvocation) =>
     // for each event, loop through each policy to check if it respects it
