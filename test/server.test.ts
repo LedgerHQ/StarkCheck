@@ -81,7 +81,7 @@ describe('server', () => {
           '/starkchecks/getPolicies/0x038b6f1f5e39f5965a28ff2624ab941112d54fe71b8bf1283f565f5c925566c0'
         )
         .set('Accept', 'application/json');
-
+      console.log(response.body);
       expect(response.headers['content-type']).toMatch(/json/);
       expect(response.status).toEqual(200);
       expect(response.body).toEqual(policyFormatted);

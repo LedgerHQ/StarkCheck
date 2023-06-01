@@ -1,7 +1,8 @@
 interface Policy {
-  address: string;
+  address?: string;
   amount?: string;
   ids?: string[];
+  allowlist?: string[];
 }
 
 interface Transaction {
