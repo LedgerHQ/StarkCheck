@@ -3,7 +3,8 @@ import { readFileSync } from 'fs';
 import app from '../src/app';
 import supertest from 'supertest';
 import { RpcProviderOptions, RPC, SequencerProviderOptions } from 'starknet';
-const dotenv = require('dotenv');
+
+import dotenv from 'dotenv';
 
 dotenv.config({ path: '../.env' });
 
