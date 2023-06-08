@@ -3,7 +3,8 @@ import {
   SequencerProvider,
   RpcProvider,
   RPC,
-  number,
+  num,
+  cairo,
   InvocationsDetailsWithNonce,
   Invocation,
   shortString,
@@ -27,7 +28,8 @@ const safeTransferSelector =
   '0x19d59d013d4aa1a8b1ce4c8299086f070733b453c02d0dc46e735edc04d6444';
 
 const SET_POLICY_EVENT_SELECTOR =
-  '0xa79c31a86c9b0b2abf73ad994711fbad4da038921b96087ff074964aecc528';
+  //   '0xa79c31a86c9b0b2abf73ad994711fbad4da038921b96087ff074964aecc528';
+  '0x302e25484ae07e6b4f3f8dab280ac0e8f921a0d73b2a39d2fe7fcbc03b8f9d5';
 
 const network = process.env.NETWORK as constants.StarknetChainId;
 const nodeUrl = process.env.NODE_RPC_URL!;
@@ -59,7 +61,7 @@ const verifyPolicy = async (
   if (res.length == 0) {
     const signedTransaction = signTransactionHash(
       transaction,
-      provider.chainId
+      await provider.getChainId()
     );
     return signedTransaction;
   } else {
@@ -179,8 +181,8 @@ const extractContractAddresses = (trace: FunctionInvocation): Array<string> => {
  * @param calldata array as hex or felt
  * @returns calldata array as felt
  */
-const sanitizeCallData = (calldata: Array<string>): Array<string> => {
-  return calldata.map((data) => number.toFelt(data));
+const sanitizeCallData = (calldata: any): Array<string> => {
+  return calldata.map((data: any) => cairo.felt(data));
 };
 
 /**
@@ -194,7 +196,12 @@ const getTrace = async (
   // starknet.js is not very smart
   transaction.calldata = sanitizeCallData(transaction.calldata || []);
   const trace: TransactionSimulationResponse =
-    await provider.getSimulateTransaction(transaction, transaction);
+    await provider.getSimulateTransaction(
+      transaction,
+      transaction,
+      undefined,
+      true
+    );
   return trace.trace;
 };
 
@@ -205,10 +212,17 @@ const getTrace = async (
  */
 const fetchEvents = async (account: string): Promise<RPC.GetEventsResponse> => {
   try {
+    // god starknet js is stupid
+    enum BLOCK_TAG {
+      latest = 'latest',
+      pending = 'pending',
+    }
     const eventFilter: RPC.EventFilter = {
       address: account,
       keys: [SET_POLICY_EVENT_SELECTOR],
       chunk_size: 20,
+      from_block: { block_number: 50000 },
+      to_block: BLOCK_TAG.pending,
     };
     return await rpcProvider.getEvents(eventFilter);
   } catch (error) {
@@ -319,7 +333,7 @@ const verifyPolicyWithTrace = (
     : [];
   const userAddresses: string[] = extractAllowlistAddresses(policySanitized);
   // Filter extractedAddresses to only include addresses that are not in userAddressesSet
-  const userAddressesSet = new Set(userAddresses);
+  const userAddressesSet = new Set(userAddresses).add(account);
   const missingAddresses = extractedAddresses.filter(
     (address) => !userAddressesSet.has(address)
   );
@@ -355,7 +369,7 @@ const verifyPolicyWithTrace = (
  */
 const checkAmount = (policy: Policy, event: FunctionInvocation): boolean => {
   if (!policy.amount) return true;
-  return number.toBN(policy.amount, 10).lte(number.toBN(event.calldata[1]));
+  return num.toBigInt(policy.amount) <= num.toBigInt(event.calldata[1]);
 };
 
 /**
@@ -370,9 +384,9 @@ const checkAmount = (policy: Policy, event: FunctionInvocation): boolean => {
 const findNFTIds = (policy: Policy, event: FunctionInvocation): boolean => {
   if (!policy.ids || event.selector == approveAllSelector) return true;
   return policy.ids
-    .map((id) => number.toBN(id))
+    .map((id) => num.toBigInt(id))
     .reduce(
-      (flag, idBn) => flag || idBn.eq(number.toBN(event.calldata[1])),
+      (flag, idBn) => flag || idBn == num.toBigInt(event.calldata[1]),
       false
     );
 };

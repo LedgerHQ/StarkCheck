@@ -2,7 +2,7 @@
 import app from '../src/app';
 import supertest from 'supertest';
 import { readFileSync } from 'fs';
-import { RpcProviderOptions, RPC } from 'starknet';
+import { RpcProviderOptions, RPC, SequencerProviderOptions } from 'starknet';
 
 const events = JSON.parse(readFileSync('test/getPolicies/events.json', 'utf8'));
 const policyToEncode = JSON.parse(
@@ -52,6 +52,24 @@ jest.mock('starknet', () => ({
       nodeUrl: 'https://starknet-fakenetwork.infura.io/v3/fake-key',
     });
   }),
+  SequencerProvider: jest.fn().mockImplementation(() => {
+    class MockedSequencerProvider extends jest.requireActual('starknet')
+      .SequencerProvider {
+      constructor(args: SequencerProviderOptions) {
+        super(args);
+      }
+    }
+
+    enum NetworkName {
+      SN_MAIN = 'SN_MAIN',
+      SN_GOERLI = 'SN_GOERLI',
+      SN_GOERLI2 = 'SN_GOERLI2',
+    }
+
+    return new MockedSequencerProvider({
+      network: NetworkName.SN_GOERLI,
+    });
+  }),
 }));
 
 describe('server', () => {
@@ -81,7 +99,6 @@ describe('server', () => {
           '/starkchecks/getPolicies/0x038b6f1f5e39f5965a28ff2624ab941112d54fe71b8bf1283f565f5c925566c0'
         )
         .set('Accept', 'application/json');
-      console.log(response.body);
       expect(response.headers['content-type']).toMatch(/json/);
       expect(response.status).toEqual(200);
       expect(response.body).toEqual(policyFormatted);
