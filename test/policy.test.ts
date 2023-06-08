@@ -3,6 +3,9 @@ import { readFileSync } from 'fs';
 import app from '../src/app';
 import supertest from 'supertest';
 import { RpcProviderOptions, RPC, SequencerProviderOptions } from 'starknet';
+const dotenv = require('dotenv');
+
+dotenv.config({ path: '../.env' });
 
 const txNotRespected = JSON.parse(
   readFileSync('test/getSimulateTransaction/txNotRespected.json', 'utf8')
@@ -75,8 +78,14 @@ jest.mock('starknet', () => ({
       }
     }
 
+    enum NetworkName {
+      SN_MAIN = 'SN_MAIN',
+      SN_GOERLI = 'SN_GOERLI',
+      SN_GOERLI2 = 'SN_GOERLI2',
+    }
+
     return new MockedSequencerProvider({
-      network: 'goerli-alpha',
+      network: NetworkName.SN_GOERLI,
     });
   }),
 }));
@@ -305,8 +314,8 @@ describe('policy API tests', () => {
     expect(response.status).toEqual(200);
     expect(response.body).toEqual({
       signature: [
-        '2574783916812235641217606860108264420836035622606275116211565106945357098436',
-        '619937207968326657681386252878381755810713851287768744122286509072016201999',
+        '3099236959300687300105724214960915423019936850019242140414748483763011225193',
+        '2711129915003034886921698814745367841144106610119676458373505776106460938419',
       ],
     });
   });

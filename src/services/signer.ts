@@ -4,11 +4,11 @@ import {
   InvocationsDetailsWithNonce,
   Invocation,
   hash,
+  stark,
   Signature,
 } from 'starknet';
 
 const starkCheckSignerPk = process.env.STARKCHECK_PK || '';
-const keyPair = ec.getKeyPair(starkCheckSignerPk);
 
 /**
  * Recompute the transacionHash and sign it to proove StarkCheck verified the transaction
@@ -21,13 +21,15 @@ function signTransactionHash(
 ): Signature {
   const txHash = hash.calculateTransactionHash(
     tx.contractAddress,
-    tx.version,
+    tx.version || 1,
+    // @ts-ignore
     tx.calldata || [],
     tx.maxFee,
     chainId,
     tx.nonce
   );
-  return ec.sign(keyPair, txHash);
+  const { r, s } = ec.starkCurve.sign(txHash, starkCheckSignerPk);
+  return [r.toString(), s.toString()];
 }
 
 export { signTransactionHash };
