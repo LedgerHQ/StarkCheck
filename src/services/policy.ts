@@ -156,18 +156,31 @@ const extractEvents = (
 };
 
 /**
- * recursively returns an array of contract called
- * @param {*} trace
- * @returns Arrray of string address
+ * Recursively returns an array of contract addresses.
+ * @param {FunctionInvocation} trace
+ * @param {number} currentDepth - The current depth in the tree.
+ * @param {number} maxDepth - The maximum depth to traverse in the tree.
+ * @returns {Array<string>} An array of contract addresses.
  */
-const extractContractAddresses = (trace: FunctionInvocation): Array<string> => {
+const extractContractAddresses = (
+  trace: FunctionInvocation,
+  currentDepth = 0,
+  maxDepth = Infinity
+): Array<string> => {
+  // Stop the recursion if the current depth exceeds the max depth
+  if (currentDepth > maxDepth) {
+    return [];
+  }
+
   const contractAddresses: Array<string> = trace.contract_address
     ? [trace.contract_address]
     : [];
 
   if (trace.internal_calls.length) {
     trace.internal_calls.forEach((internalCall: FunctionInvocation) => {
-      contractAddresses.push(...extractContractAddresses(internalCall));
+      contractAddresses.push(
+        ...extractContractAddresses(internalCall, currentDepth + 1, maxDepth)
+      );
     });
   }
 
@@ -328,8 +341,9 @@ const verifyPolicyWithTrace = (
     ? extractEvents(trace.function_invocation)
     : [];
   const extractedAddresses = trace.function_invocation
-    ? extractContractAddresses(trace.function_invocation)
+    ? extractContractAddresses(trace.function_invocation, 0, 2)
     : [];
+
   const userAddresses: string[] = extractAllowlistAddresses(policySanitized);
   // Filter extractedAddresses to only include addresses that are not in userAddressesSet
   const userAddressesSet = new Set(userAddresses).add(account);
@@ -393,6 +407,7 @@ const findNFTIds = (policy: Policy, event: FunctionInvocation): boolean => {
 export default {
   verifyPolicy,
   verifyPolicyWithTrace,
+  extractContractAddresses,
   encodePolicy,
   getPolicies,
 };
