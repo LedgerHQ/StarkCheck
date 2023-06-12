@@ -28,8 +28,7 @@ const safeTransferSelector =
   '0x19d59d013d4aa1a8b1ce4c8299086f070733b453c02d0dc46e735edc04d6444';
 
 const SET_POLICY_EVENT_SELECTOR =
-  //   '0xa79c31a86c9b0b2abf73ad994711fbad4da038921b96087ff074964aecc528';
-  '0x302e25484ae07e6b4f3f8dab280ac0e8f921a0d73b2a39d2fe7fcbc03b8f9d5';
+  '0xa79c31a86c9b0b2abf73ad994711fbad4da038921b96087ff074964aecc528';
 
 const network = process.env.NETWORK as constants.StarknetChainId;
 const nodeUrl = process.env.NODE_RPC_URL!;
