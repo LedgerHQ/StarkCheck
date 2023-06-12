@@ -271,6 +271,20 @@ describe('policy detection tests', () => {
         "0x373c71f077b96cbe7a57225cd503d29cadb0056ed741a058094234d82de2f9",  // Alpha Road: Pool Factory
         "0x61fdcf831f23d070b26a4fdc9d43c2fbba1928a529f51b5335cd7b738f97945" // Alpha Road: ETH/arfBTC LP
      */
+    test('allowlist', async () => {
+      const trace = JSON.parse(readFileSync('test/txTrace1.json', 'utf8'));
+      const addresses = await policyService.extractContractAddresses(
+        trace.function_invocation,
+        0,
+        2
+      );
+      expect(addresses).toStrictEqual([
+        '0x71dc40f7a57befa889f77d9c912523843a7fc978f4ee422f1b4573a80108b73',
+        '0x72df4dc5b6c4df72e4288857317caf2ce9da166ab8719ab8306516a2fddfff7',
+        '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7',
+        '0x4aec73f0611a9be0524e7ef21ab1679bdf9c97dc7d72614f15373d431226b6a',
+      ]);
+    });
     test('policy pass', async () => {
       const trace = JSON.parse(readFileSync('test/txTrace1.json', 'utf8'));
       const policy = JSON.parse(readFileSync('test/policyERC20.json', 'utf8'));
