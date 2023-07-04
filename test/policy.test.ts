@@ -164,6 +164,20 @@ describe('policy detection tests', () => {
       );
       expect(res.length).toBe(1);
     });
+    test.skip('ERC20 AVNU SWAP', async () => {
+      const trace = JSON.parse(readFileSync('test/swap/AVNUSwap.json', 'utf8'));
+      const policy = JSON.parse(readFileSync('test/policyERC20.json', 'utf8'));
+      policy.account =
+        '0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c';
+      policy.policy[0].address =
+        '0x072df4dc5b6c4df72e4288857317caf2ce9da166ab8719ab8306516a2fddfff7';
+      const res = await policyService.verifyPolicyWithTrace(
+        policy.account,
+        policy.policy,
+        trace
+      );
+      expect(res.length).toBe(0);
+    });
   });
   describe('ERC-721', () => {
     describe('setApproveAll', () => {
