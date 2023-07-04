@@ -16,16 +16,12 @@ import {
 import { Policy } from '../types/policy';
 import { signTransactionHash } from './signer';
 
-const approveSelector =
-  '0x219209e083275171774dab1df80982e9df2096516f06319c5c6d71ae0a8480c';
-const approveAllSelector =
-  '0x2d4c8ea4c8fb9f571d1f6f9b7692fff8e5ceaf73b1df98e7da8c1109b39ae9a';
-const transferFromSelector =
-  '0x41b033f4a31df8067c24d1e9b550a2ce75fd4a29e1147af9752174f0e6cb20';
-const transferSelector =
-  '0x83afd3f4caedc6eebf44246fe54e38c95e3179a5ec9ea81740eca5b482d12e';
-const safeTransferSelector =
-  '0x19d59d013d4aa1a8b1ce4c8299086f070733b453c02d0dc46e735edc04d6444';
+const transferEventKey =
+  '0x99cd8bde557814842a3121e8ddfd433a539b8c9f14bf31ebf108d12e6196e9';
+const approvalEventKey =
+  '0x134692b230b9e1ffa39098904722134159652b09c5bc41d88d6698779d228ff';
+const approvalForAllEventKey =
+  '0x6ad9ed7b6318f1bcffefe19df9aeb40d22c36bed567e1925a5ccde0536edd';
 
 const SET_POLICY_EVENT_SELECTOR =
   '0xa79c31a86c9b0b2abf73ad994711fbad4da038921b96087ff074964aecc528';
@@ -34,6 +30,12 @@ const network = process.env.NETWORK as constants.StarknetChainId;
 const nodeUrl = process.env.NODE_RPC_URL!;
 const provider = new SequencerProvider({ network });
 const rpcProvider = new RpcProvider({ nodeUrl });
+
+interface TransferEvent {
+  sender: string;
+  receiver: string;
+  amount: string;
+}
 
 /**
  *
@@ -127,20 +129,20 @@ const getPolicies = async (
 };
 
 /**
- * recursively returns an array of events, if the current internal has an events field populated
+ * recursively returns an array of FunctionInvocation, if the current internal has an events field populated
  * this events has to match the selector we are watching
- * @param {*} trace
- * @returns Arrray of Events
+ * @param FunctionInvocation trace
+ * @returns Arrray of FunctionInvocation (events)
  */
 const extractEvents = (
   trace: FunctionInvocation
 ): Array<FunctionInvocation> => {
-  return trace.events.length &&
-    (trace.selector == approveSelector ||
-      trace.selector == approveAllSelector ||
-      trace.selector == transferSelector ||
-      trace.selector == transferFromSelector ||
-      trace.selector == safeTransferSelector)
+  const eventKeys = [
+    transferEventKey,
+    approvalEventKey,
+    approvalForAllEventKey,
+  ];
+  return trace.events.some((event) => eventKeys.includes(event.keys[0]))
     ? [trace].concat(
         trace.internal_calls.length
           ? trace.internal_calls.flatMap((it: FunctionInvocation) =>
@@ -322,6 +324,40 @@ function extractAllowlistAddresses(policy: Policy[]): string[] {
   return [];
 }
 
+function extractTransferInfo(
+  trace: FunctionInvocation,
+  caller_address: string
+): TransferEvent[] {
+  let transferEvents: TransferEvent[] = [];
+
+  const eventData = trace.events
+    .filter(
+      (event) =>
+        event.keys[0] === transferEventKey &&
+        (event.data[1] === caller_address || event.data[0] === caller_address)
+    )
+    .map((event) => {
+      console.log(event);
+      return {
+        sender: event.data[0],
+        receiver: event.data[1],
+        amount: event.data[2],
+      };
+    });
+
+  transferEvents.push(...eventData);
+
+  // Recursively search in internal_calls
+  for (const internalCall of trace.internal_calls) {
+    transferEvents = [
+      ...transferEvents,
+      ...extractTransferInfo(internalCall, caller_address),
+    ];
+  }
+
+  return transferEvents;
+}
+
 /**
  * Checks all events emitted by the transaction against the user policies
  * Note: all events checked here are already filtered using the selectors we watch
@@ -351,12 +387,19 @@ const verifyPolicyWithTrace = (
     (address) => !userAddressesSet.has(address)
   );
 
+  const balanceChanges = trace.function_invocation
+    ? extractTransferInfo(trace.function_invocation, account)
+    : [];
+
+  console.log(balanceChanges);
+
   // Returns an array of addresses not present in the userAddresses array.
   // If all addresses are present, it will return an empty array.
   if (missingAddresses.length) {
     console.log(missingAddresses);
     return missingAddresses;
   }
+
   // Loop through all events with transfer/approve/etc selectors
   return events.filter((event: FunctionInvocation) =>
     // for each event, loop through each policy to check if it respects it
@@ -395,7 +438,11 @@ const checkAmount = (policy: Policy, event: FunctionInvocation): boolean => {
  * @returns false if pass, true if protected id is transfered or if approveAll is called
  */
 const findNFTIds = (policy: Policy, event: FunctionInvocation): boolean => {
-  if (!policy.ids || event.selector == approveAllSelector) return true;
+  if (
+    !policy.ids ||
+    event.events.some((event) => event.keys[0] === approvalForAllEventKey)
+  )
+    return true;
   return policy.ids
     .map((id) => num.toBigInt(id))
     .reduce(
