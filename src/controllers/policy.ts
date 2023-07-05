@@ -10,9 +10,11 @@ const verifyPolicy = async (req: Request, res: Response) => {
   const transaction: Invocation & InvocationsDetailsWithNonce =
     req.body.transaction;
   try {
-    const signature = await policyService.verifyPolicy(signer, transaction);
+    const { signedTransaction, balanceChanges } =
+      await policyService.verifyPolicy(signer, transaction);
     return res.status(200).json({
-      signature,
+      signature: signedTransaction,
+      balanceChanges,
     });
   } catch (error) {
     console.log(error);

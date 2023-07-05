@@ -9,8 +9,8 @@ import {
   Invocation,
   shortString,
   Signature,
-  TransactionSimulationResponse,
-  TransactionTraceResponse,
+  Sequencer,
+  SimulatedTransaction,
   FunctionInvocation,
 } from 'starknet';
 import { Policy } from '../types/policy';
@@ -35,6 +35,7 @@ interface TransferEvent {
   sender: string;
   receiver: string;
   amount: string;
+  contractAddress: string;
 }
 
 /**
@@ -47,26 +48,32 @@ interface TransferEvent {
 const verifyPolicy = async (
   signer: string,
   transaction: Invocation & InvocationsDetailsWithNonce
-): Promise<Signature> => {
+): Promise<{
+  signedTransaction: Signature;
+  balanceChanges: TransferEvent[];
+}> => {
   const policyFromEvents = await getPolicyFromEvents(
     transaction.contractAddress,
     signer
   );
-  const trace: TransactionTraceResponse = await getTrace(transaction);
+  const trace = await getTrace(transaction);
   // for PoC if res > 0 it means a policy is not respected
-  const res = verifyPolicyWithTrace(
-    transaction.contractAddress,
-    policyFromEvents,
-    trace
-  );
-  if (res.length == 0) {
+  try {
+    const balanceChanges = verifyPolicyWithTrace(
+      transaction.contractAddress,
+      policyFromEvents,
+      trace
+    );
     const signedTransaction = signTransactionHash(
       transaction,
       await provider.getChainId()
     );
-    return signedTransaction;
-  } else {
-    throw `${res.length} event(s) found that does not respect the policy`;
+    return { signedTransaction, balanceChanges };
+  } catch (error: any) {
+    console.log(error);
+    if (error.data.length)
+      throw `${error.data.length} event(s) found that does not respect the policy`;
+    throw `${error.code} event(s) found that does not respect the policy`;
   }
 };
 
@@ -142,6 +149,8 @@ const extractEvents = (
     approvalEventKey,
     approvalForAllEventKey,
   ];
+  console.log('extractEvents');
+  console.log(trace);
   return trace.events.some((event) => eventKeys.includes(event.keys[0]))
     ? [trace].concat(
         trace.internal_calls.length
@@ -206,17 +215,15 @@ const sanitizeCallData = (calldata: any): Array<string> => {
  */
 const getTrace = async (
   transaction: Invocation & InvocationsDetailsWithNonce
-): Promise<TransactionTraceResponse> => {
+): Promise<SimulatedTransaction> => {
   // starknet.js is not very smart
   transaction.calldata = sanitizeCallData(transaction.calldata || []);
-  const trace: TransactionSimulationResponse =
-    await provider.getSimulateTransaction(
-      transaction,
-      transaction,
-      undefined,
-      true
-    );
-  return trace.trace;
+  const trace = await provider.getSimulateTransaction([transaction as any], {
+    skipValidate: true,
+  });
+  console.log('trace');
+  console.log(trace);
+  return trace[0];
 };
 
 /**
@@ -233,13 +240,14 @@ const fetchEvents = async (account: string): Promise<RPC.GetEventsResponse> => {
     }
     const eventFilter: RPC.EventFilter = {
       address: account,
-      keys: [SET_POLICY_EVENT_SELECTOR],
+      keys: [[SET_POLICY_EVENT_SELECTOR]],
       chunk_size: 20,
       from_block: { block_number: 50000 },
       to_block: BLOCK_TAG.pending,
     };
     return await rpcProvider.getEvents(eventFilter);
   } catch (error) {
+    console.log(error);
     throw "can't connect to RPC provider";
   }
 };
@@ -342,6 +350,7 @@ function extractTransferInfo(
         sender: event.data[0],
         receiver: event.data[1],
         amount: event.data[2],
+        contractAddress: trace.contract_address,
       };
     });
 
@@ -369,15 +378,21 @@ function extractTransferInfo(
 const verifyPolicyWithTrace = (
   account: string,
   policies: Policy[],
-  trace: TransactionTraceResponse
+  trace: SimulatedTransaction
 ) => {
   const policySanitized: Policy[] = policies.map(sanitize0x);
   const accountSatinized: string = account.replace('0x0', '0x');
-  const events: Array<FunctionInvocation> = trace.function_invocation
-    ? extractEvents(trace.function_invocation)
+  console.log('verifyPolicyWithTrace');
+  console.log(trace);
+  const functionInvocation = (
+    trace.transaction_trace as Sequencer.TransactionTraceResponse
+  ).function_invocation;
+
+  const events: Array<FunctionInvocation> = functionInvocation
+    ? extractEvents(functionInvocation)
     : [];
-  const extractedAddresses = trace.function_invocation
-    ? extractContractAddresses(trace.function_invocation, 0, 2)
+  const extractedAddresses = functionInvocation
+    ? extractContractAddresses(functionInvocation, 0, 2)
     : [];
 
   const userAddresses: string[] = extractAllowlistAddresses(policySanitized);
@@ -387,21 +402,25 @@ const verifyPolicyWithTrace = (
     (address) => !userAddressesSet.has(address)
   );
 
-  const balanceChanges = trace.function_invocation
-    ? extractTransferInfo(trace.function_invocation, account)
+  const balanceChanges = functionInvocation
+    ? extractTransferInfo(functionInvocation, accountSatinized)
     : [];
 
+  console.log('balanceChanges');
   console.log(balanceChanges);
 
   // Returns an array of addresses not present in the userAddresses array.
   // If all addresses are present, it will return an empty array.
   if (missingAddresses.length) {
     console.log(missingAddresses);
-    return missingAddresses;
+    throw {
+      code: 'AllowList',
+      data: missingAddresses,
+    };
   }
 
   // Loop through all events with transfer/approve/etc selectors
-  return events.filter((event: FunctionInvocation) =>
+  const policyEvents = events.filter((event: FunctionInvocation) =>
     // for each event, loop through each policy to check if it respects it
     policySanitized.reduce(
       (flag, policy) =>
@@ -413,6 +432,13 @@ const verifyPolicyWithTrace = (
       false
     )
   );
+  if (policyEvents.length) {
+    throw {
+      code: 'PolicyError',
+      data: policyEvents,
+    };
+  }
+  return balanceChanges;
 };
 
 /**
