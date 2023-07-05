@@ -99,9 +99,9 @@ describe('policy detection tests', () => {
       const res = await policyService.verifyPolicyWithTrace(
         policy.account,
         policy.policy,
-        trace
+        trace[0]
       );
-      expect(res.length).toBe(0);
+      expect(res.length).toBe(3);
     });
     test('ERC20 policy pass - policy 0x0 format', async () => {
       const trace = JSON.parse(readFileSync('test/txTrace1.json', 'utf8'));
@@ -111,9 +111,9 @@ describe('policy detection tests', () => {
       const res = await policyService.verifyPolicyWithTrace(
         policy.account,
         policy.policy,
-        trace
+        trace[0]
       );
-      expect(res.length).toBe(0);
+      expect(res.length).toBe(3);
     });
     test('simple ERC20 transfer policy - Account 0x0 format', async () => {
       const trace = JSON.parse(
@@ -122,23 +122,31 @@ describe('policy detection tests', () => {
       const policy = JSON.parse(
         readFileSync('test/policySimpleTransfer.json', 'utf8')
       );
-      const res = await policyService.verifyPolicyWithTrace(
-        policy.account,
-        policy.policy,
-        trace
-      );
-      expect(res.length).toBe(1);
+      try {
+        await policyService.verifyPolicyWithTrace(
+          policy.account,
+          policy.policy,
+          trace[0]
+        );
+      } catch (e: any) {
+        expect(e.code).toBe('PolicyError');
+        expect(e.data.length).toBe(1); // Verify the length of the data property
+      }
     });
     test('ERC20 policy amount greater than transfered', async () => {
       const trace = JSON.parse(readFileSync('test/txTrace1.json', 'utf8'));
       const policy = JSON.parse(readFileSync('test/policyERC20.json', 'utf8'));
       policy.policy[0].amount = '2';
-      const res = await policyService.verifyPolicyWithTrace(
-        policy.account,
-        policy.policy,
-        trace
-      );
-      expect(res.length).toBe(1);
+      try {
+        await policyService.verifyPolicyWithTrace(
+          policy.account,
+          policy.policy,
+          trace[0]
+        );
+      } catch (e: any) {
+        expect(e.code).toBe('PolicyError');
+        expect(e.data.length).toBe(1); // Verify the length of the data property
+      }
     });
     test('ERC20 policy amount greater than transfered - 0x0 format', async () => {
       const trace = JSON.parse(readFileSync('test/txTrace1.json', 'utf8'));
@@ -146,25 +154,33 @@ describe('policy detection tests', () => {
       policy.policy[0].amount = '2';
       policy.policy[0].address =
         '0x072df4dc5b6c4df72e4288857317caf2ce9da166ab8719ab8306516a2fddfff7';
-      const res = await policyService.verifyPolicyWithTrace(
-        policy.account,
-        policy.policy,
-        trace
-      );
-      expect(res.length).toBe(1);
+      try {
+        await policyService.verifyPolicyWithTrace(
+          policy.account,
+          policy.policy,
+          trace[0]
+        );
+      } catch (e: any) {
+        expect(e.code).toBe('PolicyError');
+        expect(e.data.length).toBe(1); // Verify the length of the data property
+      }
     });
     test('ERC20 policy without amount does not validate', async () => {
       const trace = JSON.parse(readFileSync('test/txTrace1.json', 'utf8'));
       const policy = JSON.parse(readFileSync('test/policyERC20.json', 'utf8'));
       policy.policy[0].amount = undefined;
-      const res = await policyService.verifyPolicyWithTrace(
-        policy.account,
-        policy.policy,
-        trace
-      );
-      expect(res.length).toBe(1);
+      try {
+        await policyService.verifyPolicyWithTrace(
+          policy.account,
+          policy.policy,
+          trace[0]
+        );
+      } catch (e: any) {
+        expect(e.code).toBe('PolicyError');
+        expect(e.data.length).toBe(1); // Verify the length of the data property
+      }
     });
-    test.skip('ERC20 AVNU SWAP', async () => {
+    test('ERC20 AVNU SWAP', async () => {
       const trace = JSON.parse(readFileSync('test/swap/AVNUSwap.json', 'utf8'));
       const policy = JSON.parse(readFileSync('test/policyERC20.json', 'utf8'));
       policy.account =
@@ -174,9 +190,28 @@ describe('policy detection tests', () => {
       const res = await policyService.verifyPolicyWithTrace(
         policy.account,
         policy.policy,
-        trace
+        trace[0]
       );
-      expect(res.length).toBe(0);
+      expect(res).toStrictEqual([
+        {
+          amount: '0x6ee8a0',
+          contractAddress:
+            '0x53c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8',
+          receiver:
+            '0x4270219d365d6b017231b52e92b3fb5d7c8378b05e9abc97724537a80e93b0f',
+          sender:
+            '0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c',
+        },
+        {
+          amount: '0xdd65733799550',
+          contractAddress:
+            '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7',
+          receiver:
+            '0x6f19b187aabb71473c27e01719fc33d53377703e7063c3151cd2481bee1c94c',
+          sender:
+            '0x4270219d365d6b017231b52e92b3fb5d7c8378b05e9abc97724537a80e93b0f',
+        },
+      ]);
     });
   });
   describe('ERC-721', () => {
@@ -189,12 +224,16 @@ describe('policy detection tests', () => {
           readFileSync('test/policyERC721.json', 'utf8')
         );
         policy.policy[0].ids = ['7'];
-        const res = await policyService.verifyPolicyWithTrace(
-          policy.account,
-          policy.policy,
-          trace
-        );
-        expect(res.length).toBe(1);
+        try {
+          await policyService.verifyPolicyWithTrace(
+            policy.account,
+            policy.policy,
+            trace[0]
+          );
+        } catch (e: any) {
+          expect(e.code).toBe('PolicyError');
+          expect(e.data.length).toBe(1); // Verify the length of the data property
+        }
       });
       test('ERC-721 policy without IDS does not validate', async () => {
         const trace = JSON.parse(
@@ -204,12 +243,16 @@ describe('policy detection tests', () => {
           readFileSync('test/policyERC721.json', 'utf8')
         );
         policy.policy[0].ids = undefined;
-        const res = await policyService.verifyPolicyWithTrace(
-          policy.account,
-          policy.policy,
-          trace
-        );
-        expect(res.length).toBe(1);
+        try {
+          await policyService.verifyPolicyWithTrace(
+            policy.account,
+            policy.policy,
+            trace[0]
+          );
+        } catch (e: any) {
+          expect(e.code).toBe('PolicyError');
+          expect(e.data.length).toBe(1); // Verify the length of the data property
+        }
       });
     });
     describe('Approve ids', () => {
@@ -224,9 +267,9 @@ describe('policy detection tests', () => {
         const res = await policyService.verifyPolicyWithTrace(
           policy.account,
           policy.policy,
-          trace
+          trace[0]
         );
-        expect(res.length).toBe(0);
+        expect(res.length).toBe(2); // 2 balances changes
       });
       test('ERC-721 policy with ids', async () => {
         const trace = JSON.parse(
@@ -235,12 +278,16 @@ describe('policy detection tests', () => {
         const policy = JSON.parse(
           readFileSync('test/policyERC721Approve.json', 'utf8')
         );
-        const res = await policyService.verifyPolicyWithTrace(
-          policy.account,
-          policy.policy,
-          trace
-        );
-        expect(res.length).toBe(1);
+        try {
+          await policyService.verifyPolicyWithTrace(
+            policy.account,
+            policy.policy,
+            trace[0]
+          );
+        } catch (e: any) {
+          expect(e.code).toBe('PolicyError');
+          expect(e.data.length).toBe(1); // Verify the length of the data property
+        }
       });
       test('ERC-721 policy without IDS does not validate', async () => {
         const trace = JSON.parse(
@@ -250,12 +297,16 @@ describe('policy detection tests', () => {
           readFileSync('test/policyERC721Approve.json', 'utf8')
         );
         policy.policy[0].ids = undefined;
-        const res = await policyService.verifyPolicyWithTrace(
-          policy.account,
-          policy.policy,
-          trace
-        );
-        expect(res.length).toBe(1);
+        try {
+          await policyService.verifyPolicyWithTrace(
+            policy.account,
+            policy.policy,
+            trace[0]
+          );
+        } catch (e: any) {
+          expect(e.code).toBe('PolicyError');
+          expect(e.data.length).toBe(1); // Verify the length of the data property
+        }
       });
     });
     describe('check policy does not block during mint', () => {
@@ -269,9 +320,18 @@ describe('policy detection tests', () => {
         const res = await policyService.verifyPolicyWithTrace(
           policy.account,
           policy.policy,
-          trace
+          trace[0]
         );
-        expect(res.length).toBe(0);
+        expect(res).toStrictEqual([
+          {
+            amount: '0x7d7',
+            contractAddress:
+              '0x727a63f78ee3f1bd18f78009067411ab369c31dece1ae22e16f567906409905',
+            receiver:
+              '0x64225cd4ea2ab991a5539106336037d048e8d37c6d9b9cc49001df6a995d527',
+            sender: '0x0',
+          },
+        ]);
       });
     });
   });
@@ -288,7 +348,7 @@ describe('policy detection tests', () => {
     test('allowlist', async () => {
       const trace = JSON.parse(readFileSync('test/txTrace1.json', 'utf8'));
       const addresses = await policyService.extractContractAddresses(
-        trace.function_invocation,
+        trace[0].transaction_trace.function_invocation,
         0,
         2
       );
@@ -305,9 +365,36 @@ describe('policy detection tests', () => {
       const res = await policyService.verifyPolicyWithTrace(
         policy.account,
         policy.policy,
-        trace
+        trace[0]
       );
-      expect(res.length).toBe(0);
+      expect(res).toStrictEqual([
+        {
+          amount: '0x6c2b0b3d2ebfaf0000',
+          contractAddress:
+            '0x72df4dc5b6c4df72e4288857317caf2ce9da166ab8719ab8306516a2fddfff7',
+          receiver:
+            '0x61fdcf831f23d070b26a4fdc9d43c2fbba1928a529f51b5335cd7b738f97945',
+          sender:
+            '0x71dc40f7a57befa889f77d9c912523843a7fc978f4ee422f1b4573a80108b73',
+        },
+        {
+          amount: '0x21b335100a819d',
+          contractAddress:
+            '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7',
+          receiver:
+            '0x61fdcf831f23d070b26a4fdc9d43c2fbba1928a529f51b5335cd7b738f97945',
+          sender:
+            '0x71dc40f7a57befa889f77d9c912523843a7fc978f4ee422f1b4573a80108b73',
+        },
+        {
+          amount: '0x38284cbe4bbfe242',
+          contractAddress:
+            '0x61fdcf831f23d070b26a4fdc9d43c2fbba1928a529f51b5335cd7b738f97945',
+          receiver:
+            '0x71dc40f7a57befa889f77d9c912523843a7fc978f4ee422f1b4573a80108b73',
+          sender: '0x0',
+        },
+      ]);
     });
     test('ERC20 policy pass - policy 0x0 format', async () => {
       const trace = JSON.parse(readFileSync('test/txTrace1.json', 'utf8'));
@@ -317,9 +404,36 @@ describe('policy detection tests', () => {
       const res = await policyService.verifyPolicyWithTrace(
         policy.account,
         policy.policy,
-        trace
+        trace[0]
       );
-      expect(res.length).toBe(0);
+      expect(res).toStrictEqual([
+        {
+          amount: '0x6c2b0b3d2ebfaf0000',
+          contractAddress:
+            '0x72df4dc5b6c4df72e4288857317caf2ce9da166ab8719ab8306516a2fddfff7',
+          receiver:
+            '0x61fdcf831f23d070b26a4fdc9d43c2fbba1928a529f51b5335cd7b738f97945',
+          sender:
+            '0x71dc40f7a57befa889f77d9c912523843a7fc978f4ee422f1b4573a80108b73',
+        },
+        {
+          amount: '0x21b335100a819d',
+          contractAddress:
+            '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7',
+          receiver:
+            '0x61fdcf831f23d070b26a4fdc9d43c2fbba1928a529f51b5335cd7b738f97945',
+          sender:
+            '0x71dc40f7a57befa889f77d9c912523843a7fc978f4ee422f1b4573a80108b73',
+        },
+        {
+          amount: '0x38284cbe4bbfe242',
+          contractAddress:
+            '0x61fdcf831f23d070b26a4fdc9d43c2fbba1928a529f51b5335cd7b738f97945',
+          receiver:
+            '0x71dc40f7a57befa889f77d9c912523843a7fc978f4ee422f1b4573a80108b73',
+          sender: '0x0',
+        },
+      ]);
     });
   });
 });
@@ -341,10 +455,22 @@ describe('policy API tests', () => {
 
     expect(response.headers['content-type']).toMatch(/json/);
     expect(response.status).toEqual(200);
+    console.log(response.body);
     expect(response.body).toEqual({
       signature: [
         '3099236959300687300105724214960915423019936850019242140414748483763011225193',
         '2711129915003034886921698814745367841144106610119676458373505776106460938419',
+      ],
+      balanceChanges: [
+        {
+          sender:
+            '0x38b6f1f5e39f5965a28ff2624ab941112d54fe71b8bf1283f565f5c925566c0',
+          receiver:
+            '0x5537071ea21b91a3b3743866ea12cf197f0b37a6b83be41dd0bbfec6a2cf8ef',
+          amount: '0x1000',
+          contractAddress:
+            '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7',
+        },
       ],
     });
   });
