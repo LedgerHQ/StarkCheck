@@ -15,7 +15,7 @@ import {
 } from 'starknet';
 import { Policy } from '../types/policy';
 import { signTransactionHash } from './signer';
-import { tokenAddrToName } from './tokenName';
+import { getType, tokenAddrToName, tokenAddrToSymbol } from './tokenName';
 
 const transferEventKey =
   '0x99cd8bde557814842a3121e8ddfd433a539b8c9f14bf31ebf108d12e6196e9';
@@ -37,7 +37,9 @@ interface TransferEvent {
   receiver: string;
   amount: string;
   contractAddress: string;
+  symbole?: string;
   name?: string;
+  type?: string;
 }
 
 /**
@@ -93,9 +95,14 @@ async function populateTransferNames(
   const populatedBalanceChanges = await Promise.all(
     balanceChanges.map(async (transfer) => {
       const name = await tokenAddrToName(transfer.contractAddress);
+      const symbol = await tokenAddrToSymbol(transfer.contractAddress);
+      const { decimals, type } = await getType(transfer.contractAddress);
       return {
         ...transfer,
+        symbol,
         name,
+        type,
+        decimals,
       };
     })
   );
