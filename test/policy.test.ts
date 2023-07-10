@@ -468,6 +468,7 @@ describe('policy API tests', () => {
           receiver:
             '0x5537071ea21b91a3b3743866ea12cf197f0b37a6b83be41dd0bbfec6a2cf8ef',
           amount: '0x1000',
+          name: 'Ethereum',
           contractAddress:
             '0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7',
         },

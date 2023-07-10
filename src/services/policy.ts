@@ -15,6 +15,7 @@ import {
 } from 'starknet';
 import { Policy } from '../types/policy';
 import { signTransactionHash } from './signer';
+import { tokenAddrToName } from './tokenName';
 
 const transferEventKey =
   '0x99cd8bde557814842a3121e8ddfd433a539b8c9f14bf31ebf108d12e6196e9';
@@ -36,6 +37,7 @@ interface TransferEvent {
   receiver: string;
   amount: string;
   contractAddress: string;
+  name?: string;
 }
 
 /**
@@ -59,16 +61,17 @@ const verifyPolicy = async (
   const trace = await getTrace(transaction);
   // for PoC if res > 0 it means a policy is not respected
   try {
-    const balanceChanges = verifyPolicyWithTrace(
+    const balanceChanges: TransferEvent[] = verifyPolicyWithTrace(
       transaction.contractAddress,
       policyFromEvents,
       trace
     );
+    const balanceChangesWithNames = await populateTransferNames(balanceChanges);
     const signedTransaction = signTransactionHash(
       transaction,
       await provider.getChainId()
     );
-    return { signedTransaction, balanceChanges };
+    return { signedTransaction, balanceChanges: balanceChangesWithNames };
   } catch (error: any) {
     console.log(error);
     if (error.data.length)
@@ -76,6 +79,28 @@ const verifyPolicy = async (
     throw `${error.code} event(s) found that does not respect the policy`;
   }
 };
+
+/**
+ * Given an array of TransferEvents, this function populates the `name` field of each event by fetching the name associated with the contractAddress of each event.
+ * It returns a new array of TransferEvents with populated `name` fields.
+ *
+ * @param balanceChanges - An array of TransferEvent objects.
+ * @returns Promise<TransferEvent[]> - A promise that resolves with an array of TransferEvents with populated `name` fields.
+ */
+async function populateTransferNames(
+  balanceChanges: TransferEvent[]
+): Promise<TransferEvent[]> {
+  const populatedBalanceChanges = await Promise.all(
+    balanceChanges.map(async (transfer) => {
+      const name = await tokenAddrToName(transfer.contractAddress);
+      return {
+        ...transfer,
+        name,
+      };
+    })
+  );
+  return populatedBalanceChanges;
+}
 
 /**
  * This takes a policy and returns a base64 and a Array<feltEncodedString> of a policy
@@ -149,8 +174,6 @@ const extractEvents = (
     approvalEventKey,
     approvalForAllEventKey,
   ];
-  console.log('extractEvents');
-  console.log(trace);
   return trace.events.some((event) => eventKeys.includes(event.keys[0]))
     ? [trace].concat(
         trace.internal_calls.length
@@ -221,8 +244,6 @@ const getTrace = async (
   const trace = await provider.getSimulateTransaction([transaction as any], {
     skipValidate: true,
   });
-  console.log('trace');
-  console.log(trace);
   return trace[0];
 };
 
@@ -345,7 +366,6 @@ function extractTransferInfo(
         (event.data[1] === caller_address || event.data[0] === caller_address)
     )
     .map((event) => {
-      console.log(event);
       return {
         sender: event.data[0],
         receiver: event.data[1],
@@ -382,8 +402,6 @@ const verifyPolicyWithTrace = (
 ) => {
   const policySanitized: Policy[] = policies.map(sanitize0x);
   const accountSatinized: string = account.replace('0x0', '0x');
-  console.log('verifyPolicyWithTrace');
-  console.log(trace);
   const functionInvocation = (
     trace.transaction_trace as Sequencer.TransactionTraceResponse
   ).function_invocation;
@@ -405,9 +423,6 @@ const verifyPolicyWithTrace = (
   const balanceChanges = functionInvocation
     ? extractTransferInfo(functionInvocation, accountSatinized)
     : [];
-
-  console.log('balanceChanges');
-  console.log(balanceChanges);
 
   // Returns an array of addresses not present in the userAddresses array.
   // If all addresses are present, it will return an empty array.
