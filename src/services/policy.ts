@@ -40,6 +40,7 @@ interface TransferEvent {
   symbole?: string;
   name?: string;
   type?: string;
+  decimals?: number;
 }
 
 /**
@@ -246,7 +247,6 @@ const sanitizeCallData = (calldata: any): Array<string> => {
 const getTrace = async (
   transaction: Invocation & InvocationsDetailsWithNonce
 ): Promise<SimulatedTransaction> => {
-  // starknet.js is not very smart
   transaction.calldata = sanitizeCallData(transaction.calldata || []);
   const trace = await provider.getSimulateTransaction([transaction as any], {
     skipValidate: true,
